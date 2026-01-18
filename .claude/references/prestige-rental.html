@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prestige - Luxury Car Rental</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #1a1a1a;
+            --color-secondary: #f5f5f5;
+            --color-accent: #ffffff;
+            --color-text: #ffffff;
+            --color-text-dark: #1a1a1a;
+            --color-gray: #808080;
+            --font-main: 'Inter', sans-serif;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--color-secondary);
+            color: var(--color-text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-primary);
+            padding: 1.5rem 5%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--color-text);
+            letter-spacing: 8px;
+            line-height: 1.2;
+        }
+
+        .logo-subtitle {
+            font-size: 0.7rem;
+            font-weight: 300;
+            color: var(--color-text);
+            letter-spacing: 3px;
+            margin-top: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--color-text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: var(--transition);
+            opacity: 0.9;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-icon {
+            color: var(--color-text);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: var(--transition);
+            opacity: 0.9;
+        }
+
+        .nav-icon:hover {
+            opacity: 1;
+        }
+
+        .phone-number {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--color-text);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* Hero Section with Cards */
+        .hero {
+            min-height: 100vh;
+            background: var(--color-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 5% 4rem;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            width: 100%;
+            max-width: 1400px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .option-card {
+            position: relative;
+            height: 550px;
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .option-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        .card-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: var(--transition);
+        }
+
+        .option-card:hover .card-background {
+            transform: scale(1.05);
+        }
+
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+            transition: var(--transition);
+        }
+
+        .option-card:hover .card-overlay {
+            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--color-text);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            line-height: 1.1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Dark card (LE NOSTRE OFFERTE) */
+        .option-card.dark .card-background {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        /* Middle card (NOLEGGIO) */
+        .option-card.middle .card-background {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+        }
+
+        /* Light card (ACQUISTA) */
+        .option-card.light .card-background {
+            background: linear-gradient(135deg, #e5e5e5 0%, #c5c5c5 100%);
+        }
+
+        .option-card.light .card-overlay {
+            background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.4) 100%);
+        }
+
+        .option-card.light:hover .card-overlay {
+            background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.5) 100%);
+        }
+
+        /* Content Sections */
+        .content-section {
+            min-height: 100vh;
+            padding: 8rem 5%;
+            display: none;
+            opacity: 0;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--color-gray);
+            letter-spacing: 1px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--color-primary);
+            color: var(--color-text);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            border-radius: 50px;
+            transition: var(--transition);
+            margin-bottom: 3rem;
+        }
+
+        .back-button:hover {
+            background: #2a2a2a;
+            transform: translateX(-5px);
+        }
+
+        /* Fleet Grid for Offerte & Noleggio */
+        .fleet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .fleet-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .fleet-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .fleet-image {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fleet-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 100%);
+        }
+
+        .fleet-info {
+            padding: 2rem;
+        }
+
+        .fleet-category {
+            font-size: 0.8rem;
+            color: var(--color-gray);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
+        .fleet-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        .fleet-features {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--color-gray);
+        }
+
+        .fleet-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .fleet-price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--color-gray);
+        }
+
+        .action-button {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--color-primary);
+            color: var(--color-text);
+            border: none;
+            font-family: var(--font-main);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 6px;
+        }
+
+        .action-button:hover {
+            background: #2a2a2a;
+            transform: scale(1.02);
+        }
+
+        /* Purchase Section */
+        .purchase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
+        .purchase-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: 0 6px 30px rgba(0,0,0,0.1);
+        }
+
+        .purchase-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+
+        .purchase-image {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(135deg, #e5e5e5 0%, #c5c5c5 100%);
+        }
+
+        .purchase-info {
+            padding: 2.5rem;
+        }
+
+        .purchase-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--color-primary);
+            color: var(--color-text);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .purchase-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--color-primary);
+        }
+
+        .purchase-desc {
+            color: var(--color-gray);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .purchase-specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .spec-item {
+            font-size: 0.9rem;
+        }
+
+        .spec-label {
+            color: var(--color-gray);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+
+        .spec-value {
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .purchase-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--color-primary);
+            color: var(--color-text);
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-text);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--color-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .option-card {
+                height: 400px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .fleet-grid,
+            .purchase-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 5%;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+                letter-spacing: 4px;
+            }
+
+            .logo-subtitle {
+                font-size: 0.6rem;
+            }
+
+            .nav-icons {
+                gap: 1rem;
+            }
+
+            .phone-number span {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .card-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo-container">
+            <div class="logo">PRESTIGE</div>
+            <div class="logo-subtitle">LUXURY CAR RENTAL</div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">FLOTTA</a></li>
+            <li><a href="#home">SERVIZI</a></li>
+            <li><a href="#home">TARIFFE</a></li>
+            <li><a href="#home">CHI SIAMO</a></li>
+            <li><a href="#home">CONTATTI</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="tel:+39123456789" class="phone-number">
+                <span>📞</span>
+                <span>+39 123 456 789</span>
+            </a>
+            <a href="#" class="nav-icon">🔍</a>
+            <a href="#" class="nav-icon">👤</a>
+        </div>
+        <button class="mobile-menu-toggle">☰</button>
+    </nav>
+
+    <!-- Hero Section with Cards -->
+    <section id="home" class="hero">
+        <div class="cards-container">
+            <div class="option-card dark" onclick="showSection('offerte')">
+                <div class="card-background"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h2 class="card-title">LE NOSTRE<br>OFFERTE</h2>
+                </div>
+            </div>
+
+            <div class="option-card middle" onclick="showSection('noleggio')">
+                <div class="card-background"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h2 class="card-title">NOLEGGIO</h2>
+                </div>
+            </div>
+
+            <div class="option-card light" onclick="showSection('acquista')">
+                <div class="card-background"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h2 class="card-title">ACQUISTA</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Offerte Section -->
+    <section id="offerte" class="content-section">
+        <a href="#home" class="back-button" onclick="showHome()">← Torna alla Home</a>
+        
+        <div class="section-header">
+            <h2 class="section-title">Le Nostre Offerte</h2>
+            <p class="section-subtitle">Promozioni esclusive e pacchetti speciali</p>
+        </div>
+
+        <div class="fleet-grid">
+            <div class="fleet-card">
+                <div class="fleet-image"></div>
+                <div class="fleet-info">
+                    <div class="fleet-category">OFFERTA WEEKEND</div>
+                    <h3 class="fleet-name">Range Rover Sport</h3>
+                    <div class="fleet-features">
+                        <span>🚗 Automatico</span>
+                        <span>⚡ V6</span>
+                    </div>
+                    <div class="fleet-price">€599 <span>/ weekend</span></div>
+                    <button class="action-button">Prenota Ora</button>
+                </div>
+            </div>
+
+            <div class="fleet-card">
+                <div class="fleet-image"></div>
+                <div class="fleet-info">
+                    <div class="fleet-category">OFFERTA SETTIMANALE</div>
+                    <h3 class="fleet-name">Mercedes GLE Coupé</h3>
+                    <div class="fleet-features">
+                        <span>🚗 Automatico</span>
+                        <span>⚡ Diesel</span>
+                    </div>
+                    <div class="fleet-price">€1.999 <span>/ settimana</span></div>
+                    <button class="action-button">Prenota Ora</button>
+                </div>
+            </div>
+
+            <div class="fleet-card">
+                <div class="fleet-image"></div>
+                <div class="fleet-info">
+                    <div class="fleet-category">OFFERTA MENSILE</div>
+                    <h3 class="fleet-name">BMW X5 M Sport</h3>
+                    <div class="fleet-features">
+                        <span>🚗 Automatico</span>
+                        <span>⚡ Ibrido</span>
+                    </div>
+                    <div class="fleet-price">€5.999 <span>/ mese</span></div>
+                    <button class="action-button">Prenota Ora</button>
+                </div>
+            </div>
+
+            <div class="fleet-card">
+                <div class="fleet-image"></div>
+                <div class="fleet-info">
+                    <div class="fleet-category">OFFERTA LUXURY</div>
+                    <h3 class="fleet-name">Porsche Cayenne Turbo</h3>
+                    <div class="fleet-features">
+                        <span>🚗 Automatico</span>
+                        <span>⚡ V8</span>
+                    </div>
+                    <div class="fleet-price">€799 <span>/ giorno</span></div>
+                    <button class="action-button">Prenota Ora</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Noleggio Section -->
+    <section id="noleggio" class="content-section">
+        <a href="#home" class="back-button" onclick="showHome()">← Torna alla Home</a>
+        
+        <div class="section-header">
+            <h2 class="section-title">Noleggio</h2>
+            <p class="section-subtitle">La nostra flotta completa di veicoli luxury</p>
+        </div>
+
+        <div class="fleet-grid">
+            <div class="fleet-card">
+                <div class="fleet-image"></div>
+                <div class="fleet-info">
+                    <div class="fleet-category">LUXURY SUV</div>
+                    <h3 class="fleet-name">Range Rover Autobiography</h3>
+                    <div class="fleet-features">
+                        <span>🚗 Automatico</span>
+                        <span>👥 5 Posti</span>
+                        <span>⚡ Ibrido</span>
+                    </div>
+                    <div class="fleet-price">€450 <span>/ giorno</span></div>
+                    <button class="action-button">Prenota Ora</button>
+                </div>
+            </div>
+
+            <div class="fleet-card">
+                <div class="fleet-image"></div>
+                <div class="fleet-info">
+                    <div class="fleet-category">SPORT SUV</div>
+                    <h3 class="fleet-name">Lamborghini Urus</h3>
+                    <div class="fleet-features">
+                        <span>🚗 Automatico</span>
+                        <span>👥 5 Posti</span>
+                        <span>⚡ V8</span>
+                    </div>
+                    <div class="fleet-price">€950 <span>/ giorno</span></div>
+                    <button class="action-button">Prenota Ora</button>
+                </div>
+            </div>
+
+            <div class="fleet-card">
+                <div class="fleet-image"></div>
+                <div class="fleet-info">
+                    <div class="fleet-category">EXECUTIVE</div>
+                    <h3 class="fleet-name">Mercedes-Maybach GLS</h3>
+                    <div class="fleet-features">
+                        <span>🚗 Automatico</span>
+                        <span>👥 7 Posti</span>
+                        <span>⚡ V8</span>
+                    </div>
+                    <div class="fleet-price">€850 <span>/ giorno</span></div>
+                    <button class="action-button">Prenota Ora</button>
+                </div>
+            </div>
+
+            <div class="fleet-card">
+                <div class="fleet-image"></div>
+                <div class="fleet-info">
+                    <div class="fleet-category">PREMIUM</div>
+                    <h3 class="fleet-name">Bentley Bentayga</h3>
+                    <div class="fleet-features">
+                        <span>🚗 Automatico</span>
+                        <span>👥 5 Posti</span>
+                        <span>⚡ W12</span>
+                    </div>
+                    <div class="fleet-price">€1.200 <span>/ giorno</span></div>
+                    <button class="action-button">Prenota Ora</button>
+                </div>
+            </div>
+
+            <div class="fleet-card">
+                <div class="fleet-image"></div>
+                <div class="fleet-info">
+                    <div class="fleet-category">COMPACT LUXURY</div>
+                    <h3 class="fleet-name">Porsche Macan GTS</h3>
+                    <div class="fleet-features">
+                        <span>🚗 Automatico</span>
+                        <span>👥 5 Posti</span>
+                        <span>⚡ V6</span>
+                    </div>
+                    <div class="fleet-price">€380 <span>/ giorno</span></div>
+                    <button class="action-button">Prenota Ora</button>
+                </div>
+            </div>
+
+            <div class="fleet-card">
+                <div class="fleet-image"></div>
+                <div class="fleet-info">
+                    <div class="fleet-category">ELECTRIC LUXURY</div>
+                    <h3 class="fleet-name">Tesla Model X Plaid</h3>
+                    <div class="fleet-features">
+                        <span>🚗 Automatico</span>
+                        <span>👥 7 Posti</span>
+                        <span>⚡ Elettrico</span>
+                    </div>
+                    <div class="fleet-price">€420 <span>/ giorno</span></div>
+                    <button class="action-button">Prenota Ora</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Acquista Section -->
+    <section id="acquista" class="content-section">
+        <a href="#home" class="back-button" onclick="showHome()">← Torna alla Home</a>
+        
+        <div class="section-header">
+            <h2 class="section-title">Acquista</h2>
+            <p class="section-subtitle">Veicoli selezionati in vendita</p>
+        </div>
+
+        <div class="purchase-grid">
+            <div class="purchase-card">
+                <div class="purchase-image"></div>
+                <div class="purchase-info">
+                    <span class="purchase-badge">COME NUOVO</span>
+                    <h3 class="purchase-name">Range Rover Sport SVR</h3>
+                    <p class="purchase-desc">Prestazioni eccezionali e comfort senza compromessi. Veicolo mantenuto in condizioni perfette.</p>
+                    
+                    <div class="purchase-specs">
+                        <div class="spec-item">
+                            <div class="spec-label">Anno</div>
+                            <div class="spec-value">2023</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Km</div>
+                            <div class="spec-value">15.000</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Motore</div>
+                            <div class="spec-value">V8 Supercharged</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Potenza</div>
+                            <div class="spec-value">575 CV</div>
+                        </div>
+                    </div>
+                    
+                    <div class="purchase-price">€145.000</div>
+                    <button class="action-button">Contattaci</button>
+                </div>
+            </div>
+
+            <div class="purchase-card">
+                <div class="purchase-image"></div>
+                <div class="purchase-info">
+                    <span class="purchase-badge">CERTIFICATO</span>
+                    <h3 class="purchase-name">Porsche Cayenne Turbo S</h3>
+                    <p class="purchase-desc">Sportività e lusso in un'unica soluzione. Tagliandi ufficiali e garanzia estesa disponibile.</p>
+                    
+                    <div class="purchase-specs">
+                        <div class="spec-item">
+                            <div class="spec-label">Anno</div>
+                            <div class="spec-value">2023</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Km</div>
+                            <div class="spec-value">8.500</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Motore</div>
+                            <div class="spec-value">V8 Biturbo</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Potenza</div>
+                            <div class="spec-value">541 CV</div>
+                        </div>
+                    </div>
+                    
+                    <div class="purchase-price">€165.000</div>
+                    <button class="action-button">Contattaci</button>
+                </div>
+            </div>
+
+            <div class="purchase-card">
+                <div class="purchase-image"></div>
+                <div class="purchase-info">
+                    <span class="purchase-badge">OCCASIONE</span>
+                    <h3 class="purchase-name">BMW X5 M Competition</h3>
+                    <p class="purchase-desc">Potenza pura e tecnologia all'avanguardia. Full optional con pacchetto M Performance.</p>
+                    
+                    <div class="purchase-specs">
+                        <div class="spec-item">
+                            <div class="spec-label">Anno</div>
+                            <div class="spec-value">2022</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Km</div>
+                            <div class="spec-value">22.000</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Motore</div>
+                            <div class="spec-value">V8 Biturbo</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Potenza</div>
+                            <div class="spec-value">625 CV</div>
+                        </div>
+                    </div>
+                    
+                    <div class="purchase-price">€118.000</div>
+                    <button class="action-button">Contattaci</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-column">
+                <h3>PRESTIGE</h3>
+                <p style="color: rgba(255, 255, 255, 0.7); line-height: 1.8; margin-top: 1rem;">
+                    Il tuo partner di fiducia per il noleggio e l'acquisto di veicoli luxury. Esperienza, professionalità e servizio esclusivo.
+                </p>
+            </div>
+
+            <div class="footer-column">
+                <h3>LINK RAPIDI</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#offerte">Le Nostre Offerte</a></li>
+                    <li><a href="#noleggio">Noleggio</a></li>
+                    <li><a href="#acquista">Acquista</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>CONTATTI</h3>
+                <ul class="footer-links">
+                    <li><a href="tel:+39123456789">+39 123 456 789</a></li>
+                    <li><a href="mailto:info@prestige.it">info@prestige.it</a></li>
+                    <li><a href="#">Via Montenapoleone 8, Milano</a></li>
+                    <li><a href="#">Lun-Dom: 9:00 - 20:00</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>SEGUICI</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Prestige Luxury Car Rental. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide home
+            document.getElementById('home').style.display = 'none';
+            
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            const section = document.getElementById(sectionId);
+            section.classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showHome() {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show home
+            document.getElementById('home').style.display = 'flex';
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Handle back button clicks
+        document.querySelectorAll('.back-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                showHome();
+            });
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') === '#home') {
+                    e.preventDefault();
+                    showHome();
+                }
+            });
+        });
+
+        // Action buttons
+        document.querySelectorAll('.action-button').forEach(button => {
+            button.addEventListener('click', () => {
+                alert('Grazie per il tuo interesse! Verrai contattato dal nostro team.\n\nPer prenotazioni immediate: +39 123 456 789');
+            });
+        });
+    </script>
+</body>
+</html>
