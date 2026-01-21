@@ -7,6 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         :root {
             --color-primary: #1a1a1a;
@@ -55,6 +59,10 @@
         .logo-container {
             display: flex;
             flex-direction: column;
+            align-items: center;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .logo {
@@ -126,8 +134,7 @@
         /* Hero Section with Cards */
         .hero {
             min-height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-                        url('/images/hero-bg.png') center/cover no-repeat;
+            background: var(--color-secondary);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -142,18 +149,38 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.15);
-            z-index: 1;
+            background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)),
+                        url('.claude/references/NOLEGGIO-2.png') center/cover no-repeat;
+            filter: blur(8px);
+            z-index: 0;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 600px;
+            background: linear-gradient(to bottom,
+                transparent 0%,
+                rgba(255, 255, 255, 0.1) 30%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0.5) 65%,
+                rgba(255, 255, 255, 0.7) 80%,
+                rgba(255, 255, 255, 0.9) 90%,
+                #ffffff 100%);
+            z-index: 2;
         }
 
         .cards-container {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            gap: 3rem;
             width: 100%;
-            max-width: 1400px;
+            max-width: 1100px;
             opacity: 0;
             animation: fadeInUp 1s ease 0.3s forwards;
         }
@@ -171,17 +198,17 @@
 
         .option-card {
             position: relative;
-            height: 550px;
-            border-radius: 24px;
+            height: 400px;
+            border-radius: 20.4px;
             overflow: hidden;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 8.5px 34px rgba(0,0,0,0.15);
         }
 
         .option-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            transform: translateY(-8.5px);
+            box-shadow: 0 17px 51px rgba(0,0,0,0.25);
         }
 
         .card-background {
@@ -205,12 +232,21 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5),
+                        0 0 20px rgba(0, 0, 0, 0.3);
             transition: var(--transition);
         }
 
         .option-card:hover .card-overlay {
-            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%);
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(45px);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 15px 60px rgba(0, 0, 0, 0.6),
+                        0 0 30px rgba(0, 0, 0, 0.4);
         }
 
         .card-content {
@@ -221,33 +257,98 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 3rem;
+            padding: 2.55rem;
             text-align: center;
         }
 
         .card-title {
-            font-size: 3rem;
+            font-size: 2.55rem;
             font-weight: 800;
             color: var(--color-text);
-            letter-spacing: 2px;
+            letter-spacing: 1.7px;
             text-transform: uppercase;
             line-height: 1.1;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 1.7px 8.5px rgba(0,0,0,0.3);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .card-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: #ffffff;
+            transition: width 0.4s ease;
+        }
+
+        .option-card:hover .card-title::after {
+            width: 80px;
+        }
+
+        .card-subtitle {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+            max-width: 280px;
+            margin: 1.5rem auto 0;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
+
+        .option-card:hover .card-subtitle {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 1.5rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease 0.1s;
+            cursor: pointer;
+        }
+
+        .card-action .arrow {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .option-card:hover .card-action {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .option-card:hover .card-action .arrow {
+            transform: translateX(5px);
         }
 
         /* Dark card (LE NOSTRE OFFERTE) */
         .option-card.dark .card-background {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            background: url('.claude/references/Black And Red Phone Mockup Instagram Story.png') center/cover no-repeat;
         }
 
         /* Middle card (NOLEGGIO) */
         .option-card.middle .card-background {
-            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            background: url('.claude/references/Black And Red Phone Mockup Instagram Story.png') center/cover no-repeat;
         }
 
         /* Light card (ACQUISTA) */
         .option-card.light .card-background {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            background: url('.claude/references/Black And Red Phone Mockup Instagram Story.png') center/cover no-repeat;
         }
 
         /* Content Sections */
@@ -319,100 +420,130 @@
         /* Fleet Grid for Offerte & Noleggio */
         .fleet-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
         }
 
         .fleet-card {
-            background: white;
-            border-radius: 12px;
+            background: #0a0a0a;
+            border-radius: 20px;
             overflow: hidden;
             transition: var(--transition);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
         }
 
         .fleet-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .fleet-image {
             width: 100%;
-            height: 280px;
-            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            height: 260px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
         }
 
         .fleet-image::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 100%);
+            display: none;
         }
 
         .fleet-info {
-            padding: 2rem;
+            padding: 1.7rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
 
         .fleet-category {
-            font-size: 0.8rem;
-            color: var(--color-gray);
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 1px;
+            text-transform: capitalize;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            z-index: 1;
+        }
+
+        .fleet-brand {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
         }
 
         .fleet-name {
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            color: #ffffff;
         }
 
         .fleet-features {
             display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-            font-size: 0.85rem;
-            color: var(--color-gray);
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: auto;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .fleet-features span:not(:last-child)::after {
+            content: '•';
+            margin-left: 0.5rem;
+        }
+
+        .fleet-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
         }
 
         .fleet-price {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 1.5rem;
+            color: #ffffff;
+            margin: 0;
         }
 
         .fleet-price span {
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 400;
-            color: var(--color-gray);
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .action-button {
-            width: 100%;
-            padding: 1.2rem;
-            background: var(--color-primary);
-            color: var(--color-text);
+            padding: 0.65rem 1.7rem;
+            background: #ffffff;
+            color: #0a0a0a;
             border: none;
             font-family: var(--font-main);
             font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            font-size: 1rem;
             cursor: pointer;
             transition: var(--transition);
-            border-radius: 6px;
+            border-radius: 25px;
         }
 
         .action-button:hover {
-            background: #2a2a2a;
-            transform: scale(1.02);
+            background: #f0f0f0;
+            transform: scale(1.05);
         }
 
         /* Purchase Section */
@@ -717,13 +848,224 @@
             font-size: 1.1rem;
         }
 
+        /* Reviews Section */
+        .reviews-section {
+            min-height: 80vh;
+            background: var(--color-primary);
+            padding: 6rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            background-image: url('/images/NOLEGGIO-2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .reviews-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 0;
+        }
+
+        .reviews-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 500px;
+            background: linear-gradient(to bottom,
+                #ffffff 0%,
+                rgba(255, 255, 255, 0.85) 15%,
+                rgba(255, 255, 255, 0.65) 30%,
+                rgba(255, 255, 255, 0.45) 45%,
+                rgba(255, 255, 255, 0.25) 60%,
+                rgba(255, 255, 255, 0.1) 75%,
+                rgba(255, 255, 255, 0.03) 90%,
+                transparent 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .reviews-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .reviews-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .reviews-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--color-text);
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .reviews-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1px;
+        }
+
+        .reviews-carousel {
+            position: relative;
+            width: 100%;
+            padding: 0 60px;
+        }
+
+        .reviews-wrapper {
+            overflow: visible;
+            width: 100%;
+            padding: 1rem 0;
+        }
+
+        .reviews-track {
+            display: flex;
+            gap: 2rem;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .review-card {
+            min-width: calc(33.333% - 1.35rem);
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 2.55rem 2.125rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            filter: blur(0px);
+        }
+
+        .review-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.08) translateZ(0);
+            z-index: 10;
+            filter: blur(0px);
+        }
+
+        .reviews-track:has(.review-card:hover) .review-card:not(:hover) {
+            filter: blur(3px);
+            opacity: 0.6;
+        }
+
+        .review-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .review-label {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--color-text);
+            margin-bottom: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .review-stars {
+            display: flex;
+            gap: 0.25rem;
+            font-size: 1.53rem;
+            margin-bottom: 1.28rem;
+        }
+
+        .star {
+            color: #FFD700;
+        }
+
+        .review-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.89rem;
+            line-height: 1.7;
+            margin-bottom: 1.28rem;
+        }
+
+        .review-author {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.81rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .reviews-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 3rem;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .indicator.active {
+            background: var(--color-text);
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        .review-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .review-arrow:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .review-arrow-left {
+            left: 0;
+        }
+
+        .review-arrow-right {
+            right: 0;
+        }
+
         /* About Section */
         .about-section {
             min-height: 100vh;
-            background: white;
+            background: #ffffff;
             padding: 8rem 5%;
             display: flex;
             align-items: center;
+            position: relative;
         }
 
         .about-container {
@@ -750,6 +1092,8 @@
             overflow: hidden;
             position: relative;
             transition: var(--transition);
+            background-size: cover;
+            background-position: center;
         }
 
         .about-image:hover {
@@ -760,6 +1104,15 @@
         .about-image:first-child {
             grid-column: 1 / -1;
             height: 380px;
+            background-image: url('https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=1600&q=80');
+        }
+
+        .about-image:nth-child(2) {
+            background-image: url('https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80');
+        }
+
+        .about-image:nth-child(3) {
+            background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80');
         }
 
         .about-image::after {
@@ -892,7 +1245,7 @@
         @media (max-width: 1024px) {
             .cards-container {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 2.5rem;
             }
 
             .option-card {
@@ -920,6 +1273,28 @@
             .about-stats {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 1rem;
+            }
+
+            .review-card {
+                min-width: calc(50% - 1rem);
+            }
+
+            .reviews-carousel {
+                padding: 0 50px;
+            }
+
+            .review-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 2rem;
+            }
+
+            .review-arrow-left {
+                left: 0;
+            }
+
+            .review-arrow-right {
+                right: 0;
             }
         }
 
@@ -950,7 +1325,7 @@
             }
 
             .card-title {
-                font-size: 2rem;
+                font-size: 1.7rem;
             }
 
             .about-title {
@@ -969,30 +1344,794 @@
             .stat-number {
                 font-size: 2.5rem;
             }
+
+            .reviews-title {
+                font-size: 2rem;
+            }
+
+            .review-card {
+                min-width: 100%;
+            }
+
+            .review-label {
+                font-size: 1.275rem;
+            }
+
+            .review-stars {
+                font-size: 1.275rem;
+            }
+
+            .reviews-carousel {
+                padding: 0 45px;
+            }
+
+            .review-arrow {
+                width: 35px;
+                height: 35px;
+                font-size: 1.8rem;
+            }
+
+            .review-arrow-left {
+                left: 0;
+            }
+
+            .review-arrow-right {
+                right: 0;
+            }
+        }
+
+        /* ============================================
+           AUTHENTICATION MODAL STYLES
+           ============================================ */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-container {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 450px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 2.5rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: var(--transition);
+            padding: 0;
+            width: 40px;
+            height: 40px;
+        }
+
+        .modal-close:hover {
+            color: #ffffff;
+            transform: rotate(90deg);
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .form-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            color: #ffffff;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .password-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-input-wrapper .form-input {
+            padding-right: 3rem;
+            flex: 1;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 0.8rem;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            line-height: 1;
+        }
+
+        .password-toggle:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .password-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .forgot-password-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .forgot-password-link:hover {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: underline;
+        }
+
+        .login-error {
+            background: rgba(255, 59, 48, 0.1);
+            border: 1px solid rgba(255, 59, 48, 0.3);
+            border-radius: 8px;
+            padding: 0.8rem;
+            color: #ff3b30;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .login-error.active {
+            display: block;
+        }
+
+        .login-button {
+            background: #ffffff;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 10px;
+            padding: 1rem 2rem;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .login-button:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           DASHBOARD STYLES
+           ============================================ */
+
+        .dashboard-section {
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: #1a1a1a;
+            border-radius: 20px;
+            color: #ffffff;
+        }
+
+        .dashboard-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .dashboard-subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .dashboard-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logout-btn {
+            background: #ff3b30;
+            color: #ffffff;
+        }
+
+        .logout-btn:hover {
+            background: #e63329;
+            transform: translateY(-2px);
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            background: rgba(26, 26, 26, 0.05);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #808080;
+        }
+
+        .dashboard-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .controls-left, .controls-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .control-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-btn {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .add-btn:hover {
+            background: #0a0a0a;
+            transform: translateY(-2px);
+        }
+
+        .control-select {
+            padding: 0.8rem 1.2rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            background: #ffffff;
+            cursor: pointer;
+        }
+
+        .control-search {
+            padding: 0.8rem 1.2rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            width: 300px;
+        }
+
+        .dashboard-table-container {
+            background: #ffffff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .dashboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .dashboard-table thead {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .dashboard-table th {
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .dashboard-table td {
+            padding: 1.2rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.95rem;
+        }
+
+        .dashboard-table tbody tr {
+            transition: var(--transition);
+        }
+
+        .dashboard-table tbody tr:hover {
+            background: rgba(26, 26, 26, 0.02);
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section-badge.offerte {
+            background: rgba(255, 149, 0, 0.1);
+            color: #ff9500;
+        }
+
+        .section-badge.noleggio {
+            background: rgba(0, 122, 255, 0.1);
+            color: #007aff;
+        }
+
+        .section-badge.acquista {
+            background: rgba(52, 199, 89, 0.1);
+            color: #34c759;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .action-icon-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .edit-btn:hover {
+            background: rgba(0, 122, 255, 0.1);
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 59, 48, 0.1);
+        }
+
+        .dashboard-no-results {
+            padding: 3rem;
+            text-align: center;
+            color: #808080;
+            font-size: 1.1rem;
+        }
+
+        .modal-large {
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 2rem 3rem;
+        }
+
+        /* Scrollbar personalizzata per il modal */
+        .modal-large::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-large::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .modal-large::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .modal-large::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-small {
+            max-width: 450px;
+        }
+
+        .car-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-textarea {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            color: #ffffff;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Image Upload Styles */
+        .image-upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-input-file {
+            display: none;
+        }
+
+        .image-preview {
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            transition: var(--transition);
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-preview:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .image-placeholder {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .image-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .image-placeholder p {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        .image-hint {
+            font-size: 0.85rem !important;
+            color: rgba(255, 255, 255, 0.4) !important;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        .remove-image-btn {
+            background: rgba(255, 59, 48, 0.1);
+            color: #ff3b30;
+            border: 1px solid rgba(255, 59, 48, 0.3);
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .remove-image-btn:hover {
+            background: rgba(255, 59, 48, 0.2);
+            border-color: rgba(255, 59, 48, 0.5);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-btn {
+            padding: 0.8rem 1.8rem;
+            border: none;
+            border-radius: 10px;
+            font-family: var(--font-main);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cancel-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .submit-btn {
+            background: #ffffff;
+            color: #0a0a0a;
+        }
+
+        .submit-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .delete-modal-content {
+            padding: 1rem 0;
+        }
+
+        .delete-message {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        .delete-car-info {
+            padding: 1rem;
+            background: rgba(255, 59, 48, 0.1);
+            border-radius: 8px;
+            font-weight: 600;
+            color: #ff3b30;
+            margin-bottom: 2rem;
+        }
+
+        .delete-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        /* Notification System */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 10001;
+            opacity: 0;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+        }
+
+        .notification.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification-error {
+            background: rgba(255, 59, 48, 0.95);
+            color: #ffffff;
+            border: 1px solid rgba(255, 59, 48, 0.3);
+        }
+
+        .notification-success {
+            background: rgba(52, 199, 89, 0.95);
+            color: #ffffff;
+            border: 1px solid rgba(52, 199, 89, 0.3);
+        }
+
+        /* Responsive Dashboard */
+        @media (max-width: 1024px) {
+            .dashboard-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+
+            .dashboard-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .controls-left, .controls-right {
+                flex-direction: column;
+            }
+
+            .control-search {
+                width: 100%;
+            }
+
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-table-container {
+                overflow-x: auto;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="#home">CHI SIAMO</a></li>
+            <li><a href="#home">CONTATTI</a></li>
+        </ul>
         <div class="logo-container">
             <div class="logo">GASPERINI AUTO</div>
             <div class="logo-subtitle">NOLEGGIO AUTO DI LUSSO</div>
         </div>
-        <ul class="nav-links">
-            <li><a href="#home">FLOTTA</a></li>
-            <li><a href="#home">SERVIZI</a></li>
-            <li><a href="#home">TARIFFE</a></li>
-            <li><a href="#home">CHI SIAMO</a></li>
-            <li><a href="#home">CONTATTI</a></li>
-        </ul>
         <div class="nav-icons">
             <a href="tel:+39123456789" class="phone-number">
                 <span>📞</span>
                 <span>+39 123 456 789</span>
             </a>
-            <a href="#" class="nav-icon">🔍</a>
-            <a href="#" class="nav-icon">👤</a>
+            <a href="#" class="nav-icon" id="userIcon" onclick="openLoginModal(); return false;">👤</a>
         </div>
         <button class="mobile-menu-toggle">☰</button>
     </nav>
@@ -1005,6 +2144,8 @@
                 <div class="card-overlay"></div>
                 <div class="card-content">
                     <h2 class="card-title">LE NOSTRE<br>OFFERTE</h2>
+                    <p class="card-subtitle">Scopri le migliori offerte sulle nostre auto di lusso selezionate</p>
+                    <div class="card-action">SCOPRI <span class="arrow">→</span></div>
                 </div>
             </div>
 
@@ -1013,6 +2154,8 @@
                 <div class="card-overlay"></div>
                 <div class="card-content">
                     <h2 class="card-title">NOLEGGIO</h2>
+                    <p class="card-subtitle">Noleggia l'auto dei tuoi sogni per qualsiasi occasione</p>
+                    <div class="card-action">SCOPRI <span class="arrow">→</span></div>
                 </div>
             </div>
 
@@ -1021,6 +2164,8 @@
                 <div class="card-overlay"></div>
                 <div class="card-content">
                     <h2 class="card-title">ACQUISTA</h2>
+                    <p class="card-subtitle">Veicoli esclusivi selezionati per te, pronti per l'acquisto</p>
+                    <div class="card-action">SCOPRI <span class="arrow">→</span></div>
                 </div>
             </div>
         </div>
@@ -1069,6 +2214,193 @@
         </div>
     </section>
 
+    <!-- Reviews Section -->
+    <section class="reviews-section">
+        <div class="reviews-container">
+            <div class="reviews-header">
+                <h2 class="reviews-title">Cosa Dicono i Nostri Clienti</h2>
+                <p class="reviews-subtitle">Esperienze reali, soddisfazione garantita</p>
+            </div>
+
+            <div class="reviews-carousel">
+                <button class="review-arrow review-arrow-left" id="reviewPrevBtn">
+                    <span>‹</span>
+                </button>
+                <button class="review-arrow review-arrow-right" id="reviewNextBtn">
+                    <span>›</span>
+                </button>
+                <div class="reviews-wrapper">
+                    <div class="reviews-track" id="reviewsTrack">
+                    <!-- Review 1 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-label">Esperienza Eccellente</div>
+                            <div class="review-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                        <p class="review-text">
+                            Servizio impeccabile e veicolo di altissima qualità. La BMW X5 era in condizioni perfette e il team è stato estremamente professionale dall'inizio alla fine.
+                        </p>
+                        <div class="review-author">— Marco R.</div>
+                    </div>
+
+                    <!-- Review 2 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-label">Lusso e Comfort</div>
+                            <div class="review-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                        <p class="review-text">
+                            Ho noleggiato una Mercedes GLE per un evento importante. Auto fantastica, servizio veloce e prezzi competitivi. Tornerò sicuramente!
+                        </p>
+                        <div class="review-author">— Laura B.</div>
+                    </div>
+
+                    <!-- Review 3 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-label">Professionalità Top</div>
+                            <div class="review-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                        <p class="review-text">
+                            Consegna puntuale, auto pulitissima e assistenza h24. Il Range Rover Sport ha superato ogni mia aspettativa. Consigliatissimo!
+                        </p>
+                        <div class="review-author">— Alessandro T.</div>
+                    </div>
+
+                    <!-- Review 4 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-label">Semplicemente Perfetto</div>
+                            <div class="review-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                        <p class="review-text">
+                            Prima volta che noleggio un'auto di lusso e non potevo fare scelta migliore. Personale cortese, auto impeccabile, esperienza da 10 e lode.
+                        </p>
+                        <div class="review-author">— Francesca M.</div>
+                    </div>
+
+                    <!-- Review 5 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-label">Servizio Eccezionale</div>
+                            <div class="review-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                        <p class="review-text">
+                            La Porsche Cayenne era un sogno da guidare. Processo di noleggio semplice e veloce, nessun problema. Gasperini Auto è sinonimo di qualità.
+                        </p>
+                        <div class="review-author">— Giovanni P.</div>
+                    </div>
+
+                    <!-- Review 6 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-label">Altamente Raccomandato</div>
+                            <div class="review-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                        <p class="review-text">
+                            Ho organizzato un matrimonio e ho noleggiato diverse auto per gli ospiti. Tutto perfetto, dal primo contatto alla riconsegna. Grazie mille!
+                        </p>
+                        <div class="review-author">— Simone D.</div>
+                    </div>
+
+                    <!-- Review 7 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-label">Esperienza Premium</div>
+                            <div class="review-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                        <p class="review-text">
+                            La Tesla Model X Plaid è stata una rivelazione. Prestazioni incredibili e il team di Gasperini Auto ha reso tutto facilissimo. Top!
+                        </p>
+                        <div class="review-author">— Andrea C.</div>
+                    </div>
+
+                    <!-- Review 8 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-label">Qualità Garantita</div>
+                            <div class="review-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                        <p class="review-text">
+                            Noleggio mensile per lavoro. Auto sempre perfetta, manutenzione impeccabile e assistenza immediata. Un partner affidabile al 100%.
+                        </p>
+                        <div class="review-author">— Roberto V.</div>
+                    </div>
+
+                    <!-- Review 9 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-label">Fantastico!</div>
+                            <div class="review-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                        <p class="review-text">
+                            Weekend con la Lamborghini Urus: un'esperienza indimenticabile! Prezzo giusto per un servizio di altissimo livello. Ritornerò presto!
+                        </p>
+                        <div class="review-author">— Matteo L.</div>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="reviews-indicators" id="reviewsIndicators"></div>
+        </div>
+    </section>
+
     <!-- Offerte Section -->
     <section id="offerte" class="content-section">
         <a href="#home" class="back-button" onclick="showHome()"><span>←</span></a>
@@ -1082,136 +2414,181 @@
         <div class="fleet-grid page-content active" data-page="1">
             <!-- Auto 1 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Sport</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 1</h3>
+                    <div class="fleet-brand">MERCEDES-BENZ</div>
+                    <h3 class="fleet-name">AMG GT</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>2 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€450 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 2 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Sport</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 2</h3>
+                    <div class="fleet-brand">BMW</div>
+                    <h3 class="fleet-name">M8 Competition</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>4 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€380 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 3 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">SUV</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 3</h3>
+                    <div class="fleet-brand">PORSCHE</div>
+                    <h3 class="fleet-name">Cayenne Turbo</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>5 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€420 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 4 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Lusso</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 4</h3>
+                    <div class="fleet-brand">AUDI</div>
+                    <h3 class="fleet-name">RS7 Sportback</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>5 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€360 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 5 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">SUV</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 5</h3>
+                    <div class="fleet-brand">RANGE ROVER</div>
+                    <h3 class="fleet-name">Sport SVR</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>5 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€390 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 6 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Sport</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 6</h3>
+                    <div class="fleet-brand">PORSCHE</div>
+                    <h3 class="fleet-name">911 Turbo S</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>4 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€550 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 7 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Lusso</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 7</h3>
+                    <div class="fleet-brand">MERCEDES-BENZ</div>
+                    <h3 class="fleet-name">S 500</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>5 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€340 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 8 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Sport</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 8</h3>
+                    <div class="fleet-brand">AUDI</div>
+                    <h3 class="fleet-name">R8 V10</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>2 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€480 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 9 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">SUV</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 9</h3>
+                    <div class="fleet-brand">LAMBORGHINI</div>
+                    <h3 class="fleet-name">Urus</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>5 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€650 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1220,136 +2597,181 @@
         <div class="fleet-grid page-content" data-page="2">
             <!-- Auto 10 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Lusso</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 10</h3>
+                    <div class="fleet-brand">BMW</div>
+                    <h3 class="fleet-name">X7 M60i</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>7 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€380 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 11 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Sport</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 11</h3>
+                    <div class="fleet-brand">FERRARI</div>
+                    <h3 class="fleet-name">Roma</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>4 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€850 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 12 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">SUV</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 12</h3>
+                    <div class="fleet-brand">AUDI</div>
+                    <h3 class="fleet-name">RS Q8</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>5 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€410 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 13 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Lusso</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 13</h3>
+                    <div class="fleet-brand">BENTLEY</div>
+                    <h3 class="fleet-name">Continental GT</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>4 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€720 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 14 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Sport</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 14</h3>
+                    <div class="fleet-brand">MASERATI</div>
+                    <h3 class="fleet-name">MC20</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>2 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€680 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 15 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">SUV</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 15</h3>
+                    <div class="fleet-brand">MERCEDES-BENZ</div>
+                    <h3 class="fleet-name">GLE 63 AMG</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>5 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€430 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 16 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Sport</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 16</h3>
+                    <div class="fleet-brand">McLAREN</div>
+                    <h3 class="fleet-name">720S</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>2 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€920 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 17 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Lusso</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 17</h3>
+                    <div class="fleet-brand">ROLLS-ROYCE</div>
+                    <h3 class="fleet-name">Ghost</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>5 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€1200 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Auto 18 -->
             <div class="fleet-card">
-                <div class="fleet-image"></div>
+                <div class="fleet-image">
+                    <div class="fleet-category">Sport</div>
+                </div>
                 <div class="fleet-info">
-                    <div class="fleet-category">OFFERTA SPECIALE</div>
-                    <h3 class="fleet-name">Auto 18</h3>
+                    <div class="fleet-brand">LAMBORGHINI</div>
+                    <h3 class="fleet-name">Huracán EVO</h3>
                     <div class="fleet-features">
-                        <span>🚗 Automatico</span>
-                        <span>⚡ Diesel</span>
+                        <span>2024</span>
+                        <span>2 posti</span>
+                        <span>Automatico</span>
                     </div>
-                    <div class="fleet-price">€XXX <span>/ giorno</span></div>
-                    <button class="action-button">Prenota Ora</button>
+                    <div class="fleet-footer">
+                        <div class="fleet-price">€780 <span>/ giorno</span></div>
+                        <button class="action-button">Prenota</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1549,6 +2971,97 @@
         </div>
     </section>
 
+    <!-- Dashboard Admin Section -->
+    <section id="dashboard" class="content-section dashboard-section">
+        <a href="#" class="back-button" id="dashboardBackButton"><span>←</span></a>
+
+        <div class="dashboard-container">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div>
+                    <h2 class="dashboard-title">Dashboard Amministrazione</h2>
+                    <p class="dashboard-subtitle">Gestione flotta veicoli Gasperini Auto</p>
+                </div>
+                <div class="dashboard-actions">
+                    <button class="dashboard-btn logout-btn" onclick="handleLogout()">
+                        🚪 Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Stats -->
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">🚗</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statOfferte">0</div>
+                        <div class="stat-label">Offerte</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statAcquista">0</div>
+                        <div class="stat-label">Acquista</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statTotal">0</div>
+                        <div class="stat-label">Totale Veicoli</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Controls -->
+            <div class="dashboard-controls">
+                <div class="controls-left">
+                    <button class="control-btn add-btn" onclick="openCarModal('add')">
+                        ➕ Aggiungi Veicolo
+                    </button>
+                    <select id="dashboardFilter" class="control-select" onchange="filterDashboardCars()">
+                        <option value="all">Tutte le Sezioni</option>
+                        <option value="offerte">Offerte</option>
+                        <option value="acquista">Acquista</option>
+                    </select>
+                </div>
+                <div class="controls-right">
+                    <input
+                        type="text"
+                        id="dashboardSearch"
+                        class="control-search"
+                        placeholder="Cerca per marca o modello..."
+                        oninput="filterDashboardCars()"
+                    >
+                </div>
+            </div>
+
+            <!-- Cars Table -->
+            <div class="dashboard-table-container">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Sezione</th>
+                            <th>Marca</th>
+                            <th>Modello</th>
+                            <th>Categoria</th>
+                            <th>Anno</th>
+                            <th>Prezzo</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dashboardTableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+                <div id="dashboardNoResults" class="dashboard-no-results" style="display: none;">
+                    Nessun veicolo trovato
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-grid">
@@ -1596,12 +3109,852 @@
     </footer>
 
     <script>
+        // ============================================
+        // SUPABASE CONFIGURATION
+        // ============================================
+
+        const SUPABASE_URL = 'https://hlyxgqmpkjupsndpidin.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhseXhncW1wa2p1cHNuZHBpZGluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg5MjAyNzYsImV4cCI6MjA4NDQ5NjI3Nn0.5vbEzGkR7FJvrqanla2UnuYntRsQX6KFd_MjJoSMDlg';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Stato autenticazione globale
+        let currentUser = null;
+
+        // ============================================
+        // AUTHENTICATION SYSTEM
+        // ============================================
+
+        // Monitora stato autenticazione Supabase
+        supabase.auth.onAuthStateChange((event, session) => {
+            currentUser = session?.user || null;
+            updateUIForLoggedInUser();
+
+            if (event === 'SIGNED_IN') {
+                console.log('User signed in:', currentUser.email);
+            } else if (event === 'SIGNED_OUT') {
+                console.log('User signed out');
+                showHome();
+            }
+        });
+
+        // Controlla se l'utente è loggato
+        function isUserLoggedIn() {
+            return currentUser !== null;
+        }
+
+        // Login con Supabase
+        async function login(email, password) {
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) throw error;
+
+                currentUser = data.user;
+                return true;
+            } catch (error) {
+                console.error('Login error:', error.message);
+                return false;
+            }
+        }
+
+        // Logout
+        async function logout() {
+            try {
+                await supabase.auth.signOut();
+                currentUser = null;
+                showHome();
+            } catch (error) {
+                console.error('Logout error:', error.message);
+            }
+        }
+
+        // Cambio password
+        async function changePassword(newPassword) {
+            try {
+                const { error } = await supabase.auth.updateUser({
+                    password: newPassword
+                });
+
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                console.error('Password change error:', error.message);
+                return false;
+            }
+        }
+
+        // Toggle visibilità password
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('loginPassword');
+            const toggleIcon = document.getElementById('passwordToggleIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '👁️‍🗨️'; // Occhio barrato
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁️'; // Occhio normale
+            }
+        }
+
+        // Apri modal login
+        function openLoginModal() {
+            // Fai sempre vedere il modal di login, anche se già loggato
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('loginUsername').focus();
+        }
+
+        // Chiudi modal login
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('loginForm').reset();
+            document.getElementById('loginError').classList.remove('active');
+        }
+
+        // Gestisci submit del form
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('loginUsername').value; // Campo ora accetta email
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+
+            const success = await login(email, password);
+
+            if (success) {
+                closeLoginModal();
+                showSection('dashboard');
+                showNotification('Accesso effettuato con successo!', 'success');
+            } else {
+                errorDiv.textContent = 'Credenziali non valide. Riprova.';
+                errorDiv.classList.add('active');
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginPassword').focus();
+            }
+        }
+
+        // Aggiorna UI quando utente è loggato
+        function updateUIForLoggedInUser() {
+            const userIcon = document.getElementById('userIcon');
+            if (isUserLoggedIn()) {
+                userIcon.style.color = '#4ade80';
+            } else {
+                userIcon.style.color = '';
+            }
+        }
+
+        // Apri modal cambio password
+        function openChangePasswordModal() {
+            document.getElementById('changePasswordModal').classList.add('active');
+        }
+
+        // Apri modal cambio password dal login
+        function openChangePasswordModalFromLogin() {
+            closeLoginModal();
+            openChangePasswordModal();
+        }
+
+        // Chiudi modal cambio password
+        function closeChangePasswordModal() {
+            document.getElementById('changePasswordModal').classList.remove('active');
+            document.getElementById('changePasswordForm').reset();
+            document.getElementById('passwordError').classList.remove('active');
+        }
+
+        // Gestisci cambio password
+        async function handleChangePassword(event) {
+            event.preventDefault();
+
+            const newPassword = document.getElementById('changeNewPassword').value;
+            const confirmPassword = document.getElementById('changeConfirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                showNotification('Le password non corrispondono', 'error');
+                return;
+            }
+
+            const success = await changePassword(newPassword);
+
+            if (success) {
+                closeChangePasswordModal();
+                showNotification('Password modificata con successo!', 'success');
+            } else {
+                showNotification('Errore durante il cambio password', 'error');
+            }
+        }
+
+        // Gestisci logout
+        function handleLogout() {
+            if (confirm('Sei sicuro di voler uscire?')) {
+                logout();
+                updateUIForLoggedInUser();
+            }
+        }
+
+        // Sistema di notifiche
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.classList.add('active'), 100);
+
+            setTimeout(() => {
+                notification.classList.remove('active');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Chiudi modal con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLoginModal();
+                closeCarModal();
+                closeDeleteModal();
+                closeChangePasswordModal();
+            }
+        });
+
+        // Chiudi modal cliccando fuori
+        ['loginModal', 'carModal', 'deleteModal', 'changePasswordModal'].forEach(modalId => {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target.id === modalId) {
+                        if (modalId === 'loginModal') closeLoginModal();
+                        else if (modalId === 'carModal') closeCarModal();
+                        else if (modalId === 'deleteModal') closeDeleteModal();
+                        else if (modalId === 'changePasswordModal') closeChangePasswordModal();
+                    }
+                });
+            }
+        });
+
+        // ============================================
+        // CAR DATA MANAGEMENT
+        // ============================================
+
+        // Genera ID univoco
+        // ============================================
+        // CRUD FUNCTIONS - SUPABASE DATABASE
+        // ============================================
+
+        // Ottieni tutte le auto da Supabase
+        async function getAllCarsFromStorage() {
+            try {
+                const { data, error } = await supabase
+                    .from('cars')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Error fetching cars:', error.message);
+                return [];
+            }
+        }
+
+        // Ottieni auto per sezione
+        async function getCarsBySection(section) {
+            try {
+                const { data, error } = await supabase
+                    .from('cars')
+                    .select('*')
+                    .eq('section', section)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Error fetching cars by section:', error.message);
+                return [];
+            }
+        }
+
+        // Ottieni auto per ID
+        async function getCarById(carId) {
+            try {
+                const { data, error } = await supabase
+                    .from('cars')
+                    .select('*')
+                    .eq('id', carId)
+                    .single();
+
+                if (error) throw error;
+                return data;
+            } catch (error) {
+                console.error('Error fetching car:', error.message);
+                return null;
+            }
+        }
+
+        // Aggiungi auto
+        async function addCar(carData) {
+            try {
+                const { data, error } = await supabase
+                    .from('cars')
+                    .insert([{
+                        ...carData,
+                        user_id: currentUser.id,
+                        image_url: carData.image || null
+                    }])
+                    .select()
+                    .single();
+
+                if (error) throw error;
+                return data;
+            } catch (error) {
+                console.error('Error adding car:', error.message);
+                throw error;
+            }
+        }
+
+        // Aggiorna auto
+        async function updateCar(carId, carData) {
+            try {
+                const { data, error} = await supabase
+                    .from('cars')
+                    .update({
+                        ...carData,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', carId)
+                    .select()
+                    .single();
+
+                if (error) throw error;
+                return data;
+            } catch (error) {
+                console.error('Error updating car:', error.message);
+                return null;
+            }
+        }
+
+        // Elimina auto
+        async function deleteCar(carId) {
+            try {
+                // Prima recupera l'auto per ottenere l'image_url
+                const car = await getCarById(carId);
+
+                // Elimina immagine da Storage se esiste
+                if (car?.image_url && car.image_url.includes('supabase')) {
+                    const url = new URL(car.image_url);
+                    const path = url.pathname.split('/storage/v1/object/public/car-images/')[1];
+                    if (path) {
+                        await supabase.storage.from('car-images').remove([path]);
+                    }
+                }
+
+                // Elimina record dal database
+                const { error } = await supabase
+                    .from('cars')
+                    .delete()
+                    .eq('id', carId);
+
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                console.error('Error deleting car:', error.message);
+                return false;
+            }
+        }
+
+        // Renderizza sezione Offerte da localStorage
+        async function renderOfferteSection() {
+            const cars = await getCarsBySection('offerte');
+            const CARS_PER_PAGE = 9;
+            const totalPages = Math.ceil(cars.length / CARS_PER_PAGE);
+
+            const offerteSection = document.getElementById('offerte');
+            const paginationContainer = offerteSection.querySelector('.pagination-container');
+
+            // Rimuovi le pagine esistenti
+            offerteSection.querySelectorAll('.page-content').forEach(el => el.remove());
+
+            // Crea pagine dinamiche
+            for (let page = 1; page <= totalPages; page++) {
+                const pageDiv = document.createElement('div');
+                pageDiv.className = 'fleet-grid page-content' + (page === 1 ? ' active' : '');
+                pageDiv.setAttribute('data-page', page);
+
+                const startIndex = (page - 1) * CARS_PER_PAGE;
+                const endIndex = startIndex + CARS_PER_PAGE;
+                const pageCars = cars.slice(startIndex, endIndex);
+
+                pageDiv.innerHTML = pageCars.map(car => `
+                    <div class="fleet-card" data-car-id="${car.id}">
+                        <div class="fleet-image" ${car.image_url ? `style="background-image: url('${car.image_url}'); background-size: cover; background-position: center;"` : ''}>
+                            <div class="fleet-category">${car.category}</div>
+                        </div>
+                        <div class="fleet-info">
+                            <div class="fleet-brand">${car.brand}</div>
+                            <h3 class="fleet-name">${car.model}</h3>
+                            <div class="fleet-features">
+                                <span>${car.year}</span>
+                                <span>${car.seats}</span>
+                                <span>${car.transmission}</span>
+                            </div>
+                            <div class="fleet-footer">
+                                <div class="fleet-price">€${car.price} <span>${car.price_unit || '/ giorno'}</span></div>
+                                <button class="action-button">Prenota</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                paginationContainer.parentNode.insertBefore(pageDiv, paginationContainer);
+            }
+
+            // Aggiorna indicatori paginazione
+            totalPagesNum = totalPages;
+            currentPageNum = 1;
+            document.getElementById('currentPage').textContent = '1';
+            document.getElementById('totalPages').textContent = totalPages;
+            document.getElementById('prevBtn').disabled = true;
+            document.getElementById('nextBtn').disabled = (totalPages <= 1);
+        }
+
+        // Aggiorna sezione Noleggio (mostra tutte le auto)
+        async function updateNoleggioCars() {
+            const allCars = await getAllCarsFromStorage();
+            availableCars.length = 0; // Svuota array
+            allCars.forEach(car => {
+                availableCars.push({
+                    brand: car.brand,
+                    model: car.model,
+                    category: car.category,
+                    price: car.price,
+                    image: car.image_url || null
+                });
+            });
+
+            // Se siamo nella sezione noleggio, riapplica filtri
+            if (document.getElementById('noleggio').classList.contains('active')) {
+                applyFilters();
+            }
+        }
+
+        // Render sezione Acquista
+        async function renderAcquistaSection() {
+            const cars = await getCarsBySection('acquista');
+            const acquistaSection = document.getElementById('acquista');
+            const purchaseGrid = acquistaSection.querySelector('.purchase-grid');
+
+            if (!purchaseGrid) return;
+
+            purchaseGrid.innerHTML = cars.map(car => `
+                <div class="purchase-card" data-car-id="${car.id}">
+                    <div class="purchase-image" ${car.image_url ? `style="background-image: url('${car.image_url}'); background-size: cover; background-position: center;"` : ''}></div>
+                    <div class="purchase-info">
+                        ${car.badge ? `<span class="purchase-badge">${car.badge}</span>` : ''}
+                        <h3 class="purchase-name">${car.brand} ${car.model}</h3>
+                        <p class="purchase-desc">${car.description || 'Veicolo di prestigio in condizioni eccellenti.'}</p>
+
+                        <div class="purchase-specs">
+                            ${car.year ? `<div class="spec-item">
+                                <div class="spec-label">Anno</div>
+                                <div class="spec-value">${car.year}</div>
+                            </div>` : ''}
+                            ${car.km ? `<div class="spec-item">
+                                <div class="spec-label">Km</div>
+                                <div class="spec-value">${car.km}</div>
+                            </div>` : ''}
+                            ${car.engine ? `<div class="spec-item">
+                                <div class="spec-label">Motore</div>
+                                <div class="spec-value">${car.engine}</div>
+                            </div>` : ''}
+                            ${car.power ? `<div class="spec-item">
+                                <div class="spec-label">Potenza</div>
+                                <div class="spec-value">${car.power}</div>
+                            </div>` : ''}
+                        </div>
+
+                        <div class="purchase-footer">
+                            <div class="purchase-price">€${car.total_price ? car.total_price.toLocaleString() : car.price}</div>
+                            <button class="action-button">Contattaci</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Sincronizza sezioni pubbliche
+        async function syncPublicSections() {
+            await renderOfferteSection();
+            await updateNoleggioCars();
+            await renderAcquistaSection();
+        }
+
+        // ============================================
+        // DASHBOARD FUNCTIONS
+        // ============================================
+
+        let currentEditCarId = null;
+        let currentDeleteCarId = null;
+
+        // Carica dashboard
+        async function loadDashboard() {
+            if (!isUserLoggedIn()) {
+                showHome();
+                return;
+            }
+
+            await updateDashboardStats();
+            await renderDashboardTable();
+        }
+
+        // Aggiorna statistiche (esclude auto noleggio)
+        async function updateDashboardStats() {
+            const cars = await getAllCarsFromStorage();
+            const offerte = cars.filter(c => c.section === 'offerte').length;
+            const acquista = cars.filter(c => c.section === 'acquista').length;
+            const total = offerte + acquista; // Solo Offerte e Acquista
+
+            document.getElementById('statOfferte').textContent = offerte;
+            document.getElementById('statAcquista').textContent = acquista;
+            document.getElementById('statTotal').textContent = total;
+        }
+
+        // Renderizza tabella (esclude auto noleggio)
+        async function renderDashboardTable(filteredCars = null) {
+            const allCars = filteredCars || await getAllCarsFromStorage();
+            // Filtra per escludere auto della sezione noleggio
+            const cars = allCars.filter(c => c.section !== 'noleggio');
+            const tbody = document.getElementById('dashboardTableBody');
+            const noResults = document.getElementById('dashboardNoResults');
+
+            if (cars.length === 0) {
+                tbody.innerHTML = '';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            noResults.style.display = 'none';
+
+            tbody.innerHTML = cars.map(car => `
+                <tr data-car-id="${car.id}">
+                    <td><span class="section-badge ${car.section}">${car.section}</span></td>
+                    <td>${car.brand}</td>
+                    <td>${car.model}</td>
+                    <td>${car.category}</td>
+                    <td>${car.year || '-'}</td>
+                    <td>€${car.price}${car.priceUnit || ''}</td>
+                    <td class="table-actions">
+                        <button class="action-icon-btn edit-btn" onclick="openCarModal('edit', '${car.id}')" title="Modifica">
+                            ✏️
+                        </button>
+                        <button class="action-icon-btn delete-btn" onclick="openDeleteModal('${car.id}')" title="Elimina">
+                            🗑️
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Filtra auto nella dashboard
+        async function filterDashboardCars() {
+            const sectionFilter = document.getElementById('dashboardFilter').value;
+            const searchTerm = document.getElementById('dashboardSearch').value.toLowerCase();
+
+            let cars = await getAllCarsFromStorage();
+
+            // Escludi sempre le auto della sezione noleggio
+            cars = cars.filter(car => car.section !== 'noleggio');
+
+            if (sectionFilter !== 'all') {
+                cars = cars.filter(car => car.section === sectionFilter);
+            }
+
+            if (searchTerm) {
+                cars = cars.filter(car =>
+                    car.brand.toLowerCase().includes(searchTerm) ||
+                    car.model.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            await renderDashboardTable(cars);
+        }
+
+        // Apri modal auto (add/edit)
+        // Variabile per memorizzare l'immagine caricata temporaneamente
+        let currentUploadedImage = null;
+
+        // Gestisce l'upload dell'immagine
+        async function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Validazione dimensione (max 5MB)
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                showNotification('Immagine troppo grande. Max 5MB.', 'error');
+                event.target.value = '';
+                return;
+            }
+
+            // Validazione tipo
+            if (!file.type.startsWith('image/')) {
+                showNotification('File non valido. Solo immagini.', 'error');
+                event.target.value = '';
+                return;
+            }
+
+            try {
+                // Genera path unico
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
+                const filePath = `${currentUser.id}/${fileName}`;
+
+                // Upload su Supabase Storage
+                const { data, error } = await supabase.storage
+                    .from('car-images')
+                    .upload(filePath, file);
+
+                if (error) throw error;
+
+                // Ottieni URL pubblico
+                const { data: urlData } = supabase.storage
+                    .from('car-images')
+                    .getPublicUrl(filePath);
+
+                currentUploadedImage = urlData.publicUrl;
+                displayImagePreview(currentUploadedImage);
+
+                showNotification('Immagine caricata con successo!', 'success');
+            } catch (error) {
+                console.error('Upload error:', error.message);
+                showNotification('Errore durante il caricamento immagine', 'error');
+                event.target.value = '';
+            }
+        }
+
+        // Mostra preview dell'immagine
+        function displayImagePreview(imageUrl) {
+            const preview = document.getElementById('imagePreview');
+            const removeBtn = document.getElementById('removeImageBtn');
+
+            preview.innerHTML = `<img src="${imageUrl}" alt="Preview" style="max-width: 100%; height: auto;">`;
+            removeBtn.style.display = 'block';
+        }
+
+        // Rimuove l'immagine
+        async function removeImage() {
+            // Se c'è un'immagine caricata su Supabase, elimina da Storage
+            if (currentUploadedImage && currentUploadedImage.includes('supabase')) {
+                try {
+                    const url = new URL(currentUploadedImage);
+                    const path = url.pathname.split('/storage/v1/object/public/car-images/')[1];
+                    if (path) {
+                        await supabase.storage.from('car-images').remove([path]);
+                    }
+                } catch (error) {
+                    console.error('Error removing image:', error);
+                }
+            }
+
+            currentUploadedImage = null;
+            document.getElementById('carImage').value = '';
+            document.getElementById('imagePreview').innerHTML = `
+                <div class="image-placeholder">
+                    <span class="image-icon">📷</span>
+                    <p>Clicca per caricare un'immagine</p>
+                    <p class="image-hint">JPG, PNG o WEBP (max 5MB)</p>
+                </div>
+            `;
+            document.getElementById('removeImageBtn').style.display = 'none';
+        }
+
+        // Click sulla preview per aprire file picker
+        document.addEventListener('DOMContentLoaded', function() {
+            const imagePreview = document.getElementById('imagePreview');
+            const fileInput = document.getElementById('carImage');
+
+            if (imagePreview && fileInput) {
+                imagePreview.addEventListener('click', function() {
+                    fileInput.click();
+                });
+            }
+        });
+
+        async function openCarModal(mode, carId = null) {
+            const modal = document.getElementById('carModal');
+            const title = document.getElementById('carModalTitle');
+            const form = document.getElementById('carForm');
+
+            form.reset();
+            currentEditCarId = null;
+            currentUploadedImage = null;
+            await removeImage(); // Reset image preview
+
+            if (mode === 'edit' && carId) {
+                const car = await getCarById(carId);
+                if (!car) return;
+
+                currentEditCarId = carId;
+                title.textContent = 'Modifica Veicolo';
+
+                // Popola form
+                document.getElementById('carId').value = car.id;
+                document.getElementById('carSection').value = car.section;
+                document.getElementById('carBrand').value = car.brand;
+                document.getElementById('carModel').value = car.model;
+                document.getElementById('carCategory').value = car.category;
+                document.getElementById('carYear').value = car.year || '';
+                document.getElementById('carSeats').value = car.seats || '';
+                document.getElementById('carTransmission').value = car.transmission || '';
+                document.getElementById('carPrice').value = car.price;
+
+                // Carica immagine esistente (image_url da Supabase)
+                if (car.image_url) {
+                    currentUploadedImage = car.image_url;
+                    displayImagePreview(car.image_url);
+                }
+
+                if (car.section === 'acquista') {
+                    document.getElementById('carBadge').value = car.badge || '';
+                    document.getElementById('carTotalPrice').value = car.total_price || '';
+                    document.getElementById('carKm').value = car.km || '';
+                    document.getElementById('carEngine').value = car.engine || '';
+                    document.getElementById('carPower').value = car.power || '';
+                    document.getElementById('carDescription').value = car.description || '';
+                }
+
+                toggleCarFields();
+            } else {
+                title.textContent = 'Aggiungi Veicolo';
+            }
+
+            modal.classList.add('active');
+        }
+
+        // Chiudi modal auto
+        function closeCarModal() {
+            document.getElementById('carModal').classList.remove('active');
+            currentEditCarId = null;
+        }
+
+        // Toggle campi basati su sezione
+        function toggleCarFields() {
+            const section = document.getElementById('carSection').value;
+            const acquistaFields = document.getElementById('acquistaFields');
+
+            if (section === 'acquista') {
+                acquistaFields.style.display = 'block';
+            } else {
+                acquistaFields.style.display = 'none';
+            }
+        }
+
+        // Submit form auto
+        async function handleCarSubmit(event) {
+            event.preventDefault();
+
+            const carData = {
+                section: document.getElementById('carSection').value,
+                brand: document.getElementById('carBrand').value,
+                model: document.getElementById('carModel').value,
+                category: document.getElementById('carCategory').value,
+                year: document.getElementById('carYear').value,
+                seats: document.getElementById('carSeats').value,
+                transmission: document.getElementById('carTransmission').value,
+                price: parseInt(document.getElementById('carPrice').value),
+                price_unit: '/ giorno'
+            };
+
+            // Aggiungi immagine se presente
+            if (currentUploadedImage) {
+                carData.image = currentUploadedImage; // Sarà salvato come image_url
+            }
+
+            // Campi per acquista
+            if (carData.section === 'acquista') {
+                carData.badge = document.getElementById('carBadge').value;
+                carData.total_price = parseInt(document.getElementById('carTotalPrice').value) || null;
+                carData.km = document.getElementById('carKm').value;
+                carData.engine = document.getElementById('carEngine').value;
+                carData.power = document.getElementById('carPower').value;
+                carData.description = document.getElementById('carDescription').value;
+            }
+
+            try {
+                if (currentEditCarId) {
+                    // Modifica
+                    await updateCar(currentEditCarId, carData);
+                    showNotification('Veicolo modificato con successo', 'success');
+                } else {
+                    // Aggiungi
+                    await addCar(carData);
+                    showNotification('Veicolo aggiunto con successo', 'success');
+                }
+
+                // Aggiorna UI
+                closeCarModal();
+                await loadDashboard();
+                await syncPublicSections();
+            } catch (error) {
+                showNotification('Errore durante il salvataggio', 'error');
+            }
+        }
+
+        // Apri modal eliminazione
+        async function openDeleteModal(carId) {
+            const car = await getCarById(carId);
+            if (!car) return;
+
+            currentDeleteCarId = carId;
+            document.getElementById('deleteCarInfo').textContent = `${car.brand} ${car.model} (${car.section})`;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        // Chiudi modal eliminazione
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+            currentDeleteCarId = null;
+        }
+
+        // Conferma eliminazione
+        async function confirmDelete() {
+            if (!currentDeleteCarId) return;
+
+            const success = await deleteCar(currentDeleteCarId);
+
+            if (success) {
+                closeDeleteModal();
+                await loadDashboard();
+                await syncPublicSections();
+                showNotification('Veicolo eliminato con successo', 'success');
+            } else {
+                showNotification('Errore durante l\'eliminazione', 'error');
+            }
+
+            currentDeleteCarId = null;
+        }
+
         function showSection(sectionId) {
+            // Proteggi dashboard
+            if (sectionId === 'dashboard' && !isUserLoggedIn()) {
+                openLoginModal();
+                return;
+            }
+
+            // Carica dashboard se richiesto
+            if (sectionId === 'dashboard') {
+                loadDashboard();
+            }
+
             // Hide home
             document.getElementById('home').style.display = 'none';
 
             // Hide about section
             document.querySelector('.about-section').style.display = 'none';
+
+            // Hide reviews section
+            document.querySelector('.reviews-section').style.display = 'none';
 
             // Hide all sections
             document.querySelectorAll('.content-section').forEach(section => {
@@ -1628,14 +3981,28 @@
             // Show about section
             document.querySelector('.about-section').style.display = 'flex';
 
+            // Show reviews section
+            document.querySelector('.reviews-section').style.display = 'flex';
+
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // Rendi le funzioni accessibili globalmente per gli onclick handlers
+        window.showSection = showSection;
+        window.showHome = showHome;
 
         // Handle back button clicks
         document.querySelectorAll('.back-button').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
+
+                // Se è il pulsante della dashboard, fai logout
+                if (button.id === 'dashboardBackButton') {
+                    logout();
+                    updateUIForLoggedInUser();
+                }
+
                 showHome();
             });
         });
@@ -1849,7 +4216,7 @@
 
             rentalFleet.innerHTML = carsToShow.map(car => `
                 <div class="fleet-card" data-brand="${car.brand}" data-category="${car.category}" data-price="${car.price}" data-name="${car.brand} ${car.model}">
-                    <div class="fleet-image"></div>
+                    <div class="fleet-image" ${car.image ? `style="background-image: url('${car.image}'); background-size: cover; background-position: center;"` : ''}></div>
                     <div class="fleet-info">
                         <div class="fleet-category">${car.category}</div>
                         <h3 class="fleet-name">${car.brand} ${car.model}</h3>
@@ -1924,6 +4291,400 @@
             currentRentalPage = 1;
             totalRentalPages = 1;
         }
+
+        // Reviews Carousel
+        const reviewsTrack = document.getElementById('reviewsTrack');
+        const reviewsIndicators = document.getElementById('reviewsIndicators');
+        const reviewCards = document.querySelectorAll('.review-card');
+        const totalReviews = reviewCards.length;
+        let currentReviewIndex = 0;
+        let reviewsPerView = 3;
+        let autoSlideInterval;
+
+        // Update reviews per view based on screen size
+        function updateReviewsPerView() {
+            if (window.innerWidth <= 768) {
+                reviewsPerView = 1;
+            } else if (window.innerWidth <= 1024) {
+                reviewsPerView = 2;
+            } else {
+                reviewsPerView = 3;
+            }
+            updateReviewCarousel();
+            createReviewIndicators();
+        }
+
+        // Calculate total pages
+        function getTotalPages() {
+            return Math.ceil(totalReviews / reviewsPerView);
+        }
+
+        // Create indicators
+        function createReviewIndicators() {
+            reviewsIndicators.innerHTML = '';
+            const totalPages = getTotalPages();
+
+            for (let i = 0; i < totalPages; i++) {
+                const indicator = document.createElement('div');
+                indicator.className = `indicator ${i === 0 ? 'active' : ''}`;
+                indicator.addEventListener('click', () => goToReviewSlide(i));
+                reviewsIndicators.appendChild(indicator);
+            }
+        }
+
+        // Update carousel position
+        function updateReviewCarousel() {
+            const cardWidth = reviewCards[0].offsetWidth;
+            const gap = 32; // 2rem
+            const offset = currentReviewIndex * (cardWidth + gap);
+            reviewsTrack.style.transform = `translateX(-${offset}px)`;
+
+            // Update indicators
+            const indicators = reviewsIndicators.querySelectorAll('.indicator');
+            const currentPage = Math.floor(currentReviewIndex / reviewsPerView);
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentPage);
+            });
+        }
+
+        // Go to specific slide
+        function goToReviewSlide(pageIndex) {
+            currentReviewIndex = pageIndex * reviewsPerView;
+            updateReviewCarousel();
+            resetAutoSlide();
+        }
+
+        // Next slide
+        function nextReviewSlide() {
+            currentReviewIndex = (currentReviewIndex + reviewsPerView) % totalReviews;
+            updateReviewCarousel();
+        }
+
+        // Previous slide
+        function prevReviewSlide() {
+            currentReviewIndex -= reviewsPerView;
+            if (currentReviewIndex < 0) {
+                // Calcola quante "pagine" ci sono e vai all'ultima
+                const totalPages = Math.ceil(totalReviews / reviewsPerView);
+                currentReviewIndex = (totalPages - 1) * reviewsPerView;
+            }
+            updateReviewCarousel();
+        }
+
+        // Auto slide
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                nextReviewSlide();
+            }, 5000); // Change slide every 5 seconds
+        }
+
+        // Reset auto slide
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        }
+
+        // Arrow click handlers
+        document.getElementById('reviewPrevBtn').addEventListener('click', () => {
+            prevReviewSlide();
+            resetAutoSlide();
+        });
+
+        document.getElementById('reviewNextBtn').addEventListener('click', () => {
+            nextReviewSlide();
+            resetAutoSlide();
+        });
+
+        // Initialize reviews carousel
+        window.addEventListener('load', async () => {
+            try {
+                // Verifica sessione Supabase
+                const { data: { session } } = await supabase.auth.getSession();
+                currentUser = session?.user || null;
+
+                // Aggiorna UI utente
+                updateUIForLoggedInUser();
+
+                // Migrazione one-time da localStorage (se necessario)
+                await migrateLocalStorageToSupabase();
+
+                // Sincronizza sezioni pubbliche
+                await syncPublicSections();
+            } catch (error) {
+                console.error('Initialization error:', error.message);
+                console.log('Il sito funziona comunque. Configura Supabase per abilitare tutte le funzionalità.');
+            }
+
+            // Inizializzazioni esistenti (sempre eseguite)
+            updateReviewsPerView();
+            startAutoSlide();
+        });
+
+        // Funzione di migrazione one-time da localStorage a Supabase
+        async function migrateLocalStorageToSupabase() {
+            const migrationKey = 'supabase_migration_completed';
+
+            // Se migrazione già completata, esci
+            if (localStorage.getItem(migrationKey)) {
+                return;
+            }
+
+            try {
+                // Leggi dati da localStorage
+                const carsJson = localStorage.getItem('gasperini_cars');
+                if (!carsJson) {
+                    localStorage.setItem(migrationKey, 'true');
+                    return;
+                }
+
+                const cars = JSON.parse(carsJson);
+
+                // Verifica se ci sono già auto nel database
+                const existingCars = await getAllCarsFromStorage();
+                if (existingCars.length > 0) {
+                    console.log('Database già popolato, skip migration');
+                    localStorage.setItem(migrationKey, 'true');
+                    return;
+                }
+
+                // Importa auto su Supabase (richiede admin loggato)
+                if (!currentUser) {
+                    console.log('User not authenticated, migration deferred');
+                    return;
+                }
+
+                for (const car of cars) {
+                    await addCar({
+                        section: car.section,
+                        brand: car.brand,
+                        model: car.model,
+                        category: car.category,
+                        year: car.year,
+                        seats: car.seats,
+                        transmission: car.transmission,
+                        price: car.price,
+                        price_unit: car.priceUnit || '/ giorno',
+                        badge: car.badge,
+                        total_price: car.totalPrice,
+                        km: car.km,
+                        engine: car.engine,
+                        power: car.power,
+                        description: car.description
+                        // Note: immagini Base64 non migrabili automaticamente
+                    });
+                }
+
+                console.log(`Migrated ${cars.length} cars to Supabase`);
+                localStorage.setItem(migrationKey, 'true');
+            } catch (error) {
+                console.error('Migration error:', error.message);
+            }
+        }
+
+        window.addEventListener('resize', updateReviewsPerView);
     </script>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Accesso Admin</h2>
+                <button class="modal-close" onclick="closeLoginModal()">×</button>
+            </div>
+            <form id="loginForm" class="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginUsername" class="form-label">Email</label>
+                    <input
+                        type="email"
+                        id="loginUsername"
+                        class="form-input"
+                        placeholder="admin@gasperini-auto.com"
+                        required
+                        autocomplete="email"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword" class="form-label">Password</label>
+                    <div class="password-input-wrapper">
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            class="form-input"
+                            placeholder="Inserisci password"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility()" aria-label="Mostra password">
+                            <span id="passwordToggleIcon">👁️</span>
+                        </button>
+                    </div>
+                    <a href="#" class="forgot-password-link" onclick="openChangePasswordModalFromLogin(); return false;">Password dimenticata?</a>
+                </div>
+                <div id="loginError" class="login-error"></div>
+                <button type="submit" class="login-button">Accedi</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Car Modal (Add/Edit) -->
+    <div id="carModal" class="modal-overlay">
+        <div class="modal-container modal-large">
+            <div class="modal-header">
+                <h2 class="modal-title" id="carModalTitle">Aggiungi Veicolo</h2>
+                <button class="modal-close" onclick="closeCarModal()">×</button>
+            </div>
+            <form id="carForm" class="car-form" onsubmit="handleCarSubmit(event)">
+                <input type="hidden" id="carId">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Sezione *</label>
+                        <select id="carSection" class="form-input" required onchange="toggleCarFields()">
+                            <option value="">Seleziona sezione</option>
+                            <option value="offerte">Offerte</option>
+                            <option value="noleggio">Noleggio</option>
+                            <option value="acquista">Acquista</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Marca *</label>
+                        <input type="text" id="carBrand" class="form-input" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Modello *</label>
+                        <input type="text" id="carModel" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Categoria *</label>
+                        <input type="text" id="carCategory" class="form-input" required
+                               placeholder="Es: Sport, Lusso, SUV">
+                    </div>
+                </div>
+
+                <div class="form-row" id="standardFields">
+                    <div class="form-group">
+                        <label class="form-label">Anno *</label>
+                        <input type="text" id="carYear" class="form-input" value="2024">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Posti</label>
+                        <input type="text" id="carSeats" class="form-input" placeholder="Es: 5 posti">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Trasmissione</label>
+                        <input type="text" id="carTransmission" class="form-input" value="Automatico">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Prezzo Giornaliero (€) *</label>
+                        <input type="number" id="carPrice" class="form-input" required min="0">
+                    </div>
+                </div>
+
+                <!-- Upload Immagine -->
+                <div class="form-group">
+                    <label class="form-label">Immagine Veicolo</label>
+                    <div class="image-upload-container">
+                        <input type="file" id="carImage" class="form-input-file" accept="image/*" onchange="handleImageUpload(event)">
+                        <div class="image-preview" id="imagePreview">
+                            <div class="image-placeholder">
+                                <span class="image-icon">📷</span>
+                                <p>Clicca per caricare un'immagine</p>
+                                <p class="image-hint">JPG, PNG o WEBP (max 2MB)</p>
+                            </div>
+                        </div>
+                        <button type="button" class="remove-image-btn" id="removeImageBtn" onclick="removeImage()" style="display: none;">
+                            🗑️ Rimuovi Immagine
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Campi specifici per Acquista -->
+                <div id="acquistaFields" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Badge</label>
+                            <input type="text" id="carBadge" class="form-input"
+                                   placeholder="Es: COME NUOVO, OCCASIONE">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Prezzo Totale (€)</label>
+                            <input type="number" id="carTotalPrice" class="form-input" min="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Chilometri</label>
+                            <input type="text" id="carKm" class="form-input" placeholder="Es: 15.000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Motore</label>
+                            <input type="text" id="carEngine" class="form-input" placeholder="Es: V8 Supercharged">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Potenza</label>
+                            <input type="text" id="carPower" class="form-input" placeholder="Es: 575 CV">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Descrizione</label>
+                        <textarea id="carDescription" class="form-textarea" rows="3"
+                                  placeholder="Descrizione del veicolo..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="form-btn cancel-btn" onclick="closeCarModal()">Annulla</button>
+                    <button type="submit" class="form-btn submit-btn">Salva Veicolo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Cambia Password</h2>
+                <button class="modal-close" onclick="closeChangePasswordModal()">×</button>
+            </div>
+            <form id="changePasswordForm" class="login-form" onsubmit="handleChangePassword(event)">
+                <div class="form-group">
+                    <label class="form-label">Nuova Password *</label>
+                    <input type="password" id="changeNewPassword" class="form-input" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Conferma Nuova Password *</label>
+                    <input type="password" id="changeConfirmPassword" class="form-input" required minlength="6">
+                </div>
+                <div id="passwordError" class="login-error"></div>
+                <button type="submit" class="login-button">Cambia Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-overlay">
+        <div class="modal-container modal-small">
+            <div class="modal-header">
+                <h2 class="modal-title">Conferma Eliminazione</h2>
+                <button class="modal-close" onclick="closeDeleteModal()">×</button>
+            </div>
+            <div class="delete-modal-content">
+                <p class="delete-message">Sei sicuro di voler eliminare questo veicolo?</p>
+                <p class="delete-car-info" id="deleteCarInfo"></p>
+                <div class="delete-actions">
+                    <button class="form-btn cancel-btn" onclick="closeDeleteModal()">Annulla</button>
+                    <button class="form-btn delete-btn" onclick="confirmDelete()">Elimina</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
