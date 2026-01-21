@@ -11,6 +11,65 @@
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <!-- Navigation Functions - Loaded FIRST to be available for onclick handlers -->
+    <script>
+        function showSection(sectionId) {
+            console.log('showSection called with:', sectionId);
+
+            // Hide home
+            const homeElement = document.getElementById('home');
+            if (homeElement) homeElement.style.display = 'none';
+
+            // Hide about section
+            const aboutSection = document.querySelector('.about-section');
+            if (aboutSection) aboutSection.style.display = 'none';
+
+            // Hide reviews section
+            const reviewsSection = document.querySelector('.reviews-section');
+            if (reviewsSection) reviewsSection.style.display = 'none';
+
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                console.log('Section opened:', sectionId);
+            } else {
+                console.error('Section not found:', sectionId);
+            }
+        }
+
+        function showHome() {
+            console.log('showHome called');
+
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show home
+            const homeElement = document.getElementById('home');
+            if (homeElement) homeElement.style.display = 'flex';
+
+            // Show about section
+            const aboutSection = document.querySelector('.about-section');
+            if (aboutSection) aboutSection.style.display = 'flex';
+
+            // Show reviews section
+            const reviewsSection = document.querySelector('.reviews-section');
+            if (reviewsSection) reviewsSection.style.display = 'flex';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        console.log('✅ Navigation functions loaded in HEAD!');
+    </script>
+
     <style>
         :root {
             --color-primary: #1a1a1a;
@@ -153,6 +212,7 @@
                         url('.claude/references/NOLEGGIO-2.png') center/cover no-repeat;
             filter: blur(8px);
             z-index: 0;
+            pointer-events: none;
         }
 
         .hero::after {
@@ -171,6 +231,7 @@
                 rgba(255, 255, 255, 0.9) 90%,
                 #ffffff 100%);
             z-index: 2;
+            pointer-events: none;
         }
 
         .cards-container {
@@ -220,6 +281,7 @@
             background-size: cover;
             background-position: center;
             transition: var(--transition);
+            pointer-events: none;
         }
 
         .option-card:hover .card-background {
@@ -239,6 +301,7 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5),
                         0 0 20px rgba(0, 0, 0, 0.3);
             transition: var(--transition);
+            pointer-events: none;
         }
 
         .option-card:hover .card-overlay {
@@ -259,6 +322,7 @@
             align-items: center;
             padding: 2.55rem;
             text-align: center;
+            pointer-events: none;
         }
 
         .card-title {
@@ -3109,13 +3173,48 @@
     </footer>
 
     <script>
+        // Navigation functions are already loaded in HEAD
+        // Now we enhance them with dashboard protection
+
+        const originalShowSection = showSection;
+        showSection = function(sectionId) {
+            // Proteggi dashboard
+            if (sectionId === 'dashboard' && typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+                if (typeof openLoginModal === 'function') {
+                    openLoginModal();
+                }
+                return;
+            }
+
+            // Carica dashboard se richiesto
+            if (sectionId === 'dashboard' && typeof loadDashboard === 'function') {
+                loadDashboard();
+            }
+
+            // Call original function
+            originalShowSection(sectionId);
+        };
+
+        console.log('✅ Navigation enhanced with dashboard protection');
+
         // ============================================
         // SUPABASE CONFIGURATION
         // ============================================
 
         const SUPABASE_URL = 'https://hlyxgqmpkjupsndpidin.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhseXhncW1wa2p1cHNuZHBpZGluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg5MjAyNzYsImV4cCI6MjA4NDQ5NjI3Nn0.5vbEzGkR7FJvrqanla2UnuYntRsQX6KFd_MjJoSMDlg';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let supabase;
+        try {
+            if (window.supabase) {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase initialized');
+            } else {
+                console.warn('⚠️ Supabase SDK not loaded');
+            }
+        } catch (error) {
+            console.error('❌ Supabase initialization error:', error);
+        }
 
         // Stato autenticazione globale
         let currentUser = null;
@@ -3125,17 +3224,19 @@
         // ============================================
 
         // Monitora stato autenticazione Supabase
-        supabase.auth.onAuthStateChange((event, session) => {
-            currentUser = session?.user || null;
-            updateUIForLoggedInUser();
+        if (supabase) {
+            supabase.auth.onAuthStateChange((event, session) => {
+                currentUser = session?.user || null;
+                updateUIForLoggedInUser();
 
-            if (event === 'SIGNED_IN') {
-                console.log('User signed in:', currentUser.email);
-            } else if (event === 'SIGNED_OUT') {
-                console.log('User signed out');
-                showHome();
-            }
-        });
+                if (event === 'SIGNED_IN') {
+                    console.log('User signed in:', currentUser.email);
+                } else if (event === 'SIGNED_OUT') {
+                    console.log('User signed out');
+                    showHome();
+                }
+            });
+        }
 
         // Controlla se l'utente è loggato
         function isUserLoggedIn() {
@@ -3935,62 +4036,7 @@
             currentDeleteCarId = null;
         }
 
-        function showSection(sectionId) {
-            // Proteggi dashboard
-            if (sectionId === 'dashboard' && !isUserLoggedIn()) {
-                openLoginModal();
-                return;
-            }
-
-            // Carica dashboard se richiesto
-            if (sectionId === 'dashboard') {
-                loadDashboard();
-            }
-
-            // Hide home
-            document.getElementById('home').style.display = 'none';
-
-            // Hide about section
-            document.querySelector('.about-section').style.display = 'none';
-
-            // Hide reviews section
-            document.querySelector('.reviews-section').style.display = 'none';
-
-            // Hide all sections
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-
-            // Show selected section
-            const section = document.getElementById(sectionId);
-            section.classList.add('active');
-
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function showHome() {
-            // Hide all sections
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-
-            // Show home
-            document.getElementById('home').style.display = 'flex';
-
-            // Show about section
-            document.querySelector('.about-section').style.display = 'flex';
-
-            // Show reviews section
-            document.querySelector('.reviews-section').style.display = 'flex';
-
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Rendi le funzioni accessibili globalmente per gli onclick handlers
-        window.showSection = showSection;
-        window.showHome = showHome;
+        // Navigation functions are defined at the top of the script
 
         // Handle back button clicks
         document.querySelectorAll('.back-button').forEach(button => {
