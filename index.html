@@ -4176,13 +4176,13 @@
             const modelInput = document.getElementById('carModel');
             const searchInput = document.getElementById('unsplashSearchInput');
 
-            // Auto-populate search focused on specific vehicle
-            const searchQuery = [brandInput.value, modelInput.value, 'vehicle', 'photography']
+            // Auto-populate search for studio automotive photography style
+            const searchQuery = [brandInput.value, modelInput.value, 'studio', 'automotive']
                 .filter(v => v && v.trim())
                 .join(' ')
                 .trim();
 
-            searchInput.value = searchQuery || 'luxury vehicle photography';
+            searchInput.value = searchQuery || 'luxury car studio automotive';
             modal.classList.add('active');
 
             // Auto-search if brand and model are filled
