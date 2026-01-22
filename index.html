@@ -16,6 +16,12 @@
         function showSection(sectionId) {
             console.log('showSection called with:', sectionId);
 
+            // Carica dashboard se richiesto e la funzione esiste
+            if (sectionId === 'dashboard' && typeof window.loadDashboard === 'function') {
+                console.log('Loading dashboard data...');
+                window.loadDashboard();
+            }
+
             // Hide home
             const homeElement = document.getElementById('home');
             if (homeElement) homeElement.style.display = 'none';
@@ -65,6 +71,63 @@
             if (reviewsSection) reviewsSection.style.display = 'flex';
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Funzioni per i modal (stub che verranno potenziate dallo script principale)
+        function openLoginModal() {
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.classList.add('active');
+                const usernameField = document.getElementById('loginUsername');
+                if (usernameField) usernameField.focus();
+            }
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('loginModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function closeCarModal() {
+            const modal = document.getElementById('carModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function closeChangePasswordModal() {
+            const modal = document.getElementById('changePasswordModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        // Stub functions per altre funzionalità (saranno definite completamente dallo script principale)
+        function changePage(direction) { console.log('changePage stub:', direction); }
+        function changeRentalPage(direction) { console.log('changeRentalPage stub:', direction); }
+        function applyFilters() { console.log('applyFilters stub'); }
+        function resetFilters() { console.log('resetFilters stub'); }
+        function handleLogout() { console.log('handleLogout stub'); }
+        function openCarModal(mode, id) { console.log('openCarModal stub:', mode, id); }
+        function openDeleteModal(id) { console.log('openDeleteModal stub:', id); }
+        function confirmDelete() { console.log('confirmDelete stub'); }
+        function removeImage() { console.log('removeImage stub'); }
+        function togglePasswordVisibility() { console.log('togglePasswordVisibility stub'); }
+        function openChangePasswordModalFromLogin() { console.log('openChangePasswordModalFromLogin stub'); }
+        function selectSuggestion(value) { console.log('selectSuggestion stub:', value); }
+        function handleLogin(event) {
+            event.preventDefault();
+            console.log('⚠️ handleLogin stub called - real function not loaded yet or failed to load!');
+            console.log('Check if there are JavaScript errors preventing the main script from loading');
+        }
+        function handleCarSubmit(event) {
+            event.preventDefault();
+            console.log('handleCarSubmit stub');
+        }
+        function handleChangePassword(event) {
+            event.preventDefault();
+            console.log('handleChangePassword stub');
         }
 
         console.log('✅ Navigation functions loaded in HEAD!');
@@ -3173,13 +3236,18 @@
     </footer>
 
     <script>
+        console.log('🚀 Main script started loading...');
+
         // Navigation functions are already loaded in HEAD
         // Now we enhance them with dashboard protection
 
         const originalShowSection = showSection;
         showSection = function(sectionId) {
+            console.log('Enhanced showSection called:', sectionId, 'isUserLoggedIn:', typeof isUserLoggedIn === 'function' ? isUserLoggedIn() : 'N/A');
+
             // Proteggi dashboard
             if (sectionId === 'dashboard' && typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+                console.log('Dashboard access blocked - user not logged in');
                 if (typeof openLoginModal === 'function') {
                     openLoginModal();
                 }
@@ -3188,6 +3256,7 @@
 
             // Carica dashboard se richiesto
             if (sectionId === 'dashboard' && typeof loadDashboard === 'function') {
+                console.log('Dashboard access granted - loading dashboard');
                 loadDashboard();
             }
 
@@ -3204,10 +3273,10 @@
         const SUPABASE_URL = 'https://hlyxgqmpkjupsndpidin.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhseXhncW1wa2p1cHNuZHBpZGluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg5MjAyNzYsImV4cCI6MjA4NDQ5NjI3Nn0.5vbEzGkR7FJvrqanla2UnuYntRsQX6KFd_MjJoSMDlg';
 
-        let supabase;
+        let supabaseClient;
         try {
             if (window.supabase) {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 console.log('✅ Supabase initialized');
             } else {
                 console.warn('⚠️ Supabase SDK not loaded');
@@ -3224,10 +3293,12 @@
         // ============================================
 
         // Monitora stato autenticazione Supabase
-        if (supabase) {
-            supabase.auth.onAuthStateChange((event, session) => {
+        if (supabaseClient) {
+            supabaseClient.auth.onAuthStateChange((event, session) => {
                 currentUser = session?.user || null;
-                updateUIForLoggedInUser();
+                if (typeof updateUIForLoggedInUser === 'function') {
+                    updateUIForLoggedInUser();
+                }
 
                 if (event === 'SIGNED_IN') {
                     console.log('User signed in:', currentUser.email);
@@ -3238,15 +3309,19 @@
             });
         }
 
+        console.log('✅ Supabase auth listener configured');
+
         // Controlla se l'utente è loggato
         function isUserLoggedIn() {
             return currentUser !== null;
         }
 
+        console.log('✅ isUserLoggedIn defined');
+
         // Login con Supabase
         async function login(email, password) {
             try {
-                const { data, error } = await supabase.auth.signInWithPassword({
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
                     email: email,
                     password: password
                 });
@@ -3264,7 +3339,7 @@
         // Logout
         async function logout() {
             try {
-                await supabase.auth.signOut();
+                await supabaseClient.auth.signOut();
                 currentUser = null;
                 showHome();
             } catch (error) {
@@ -3275,7 +3350,7 @@
         // Cambio password
         async function changePassword(newPassword) {
             try {
-                const { error } = await supabase.auth.updateUser({
+                const { error } = await supabaseClient.auth.updateUser({
                     password: newPassword
                 });
 
@@ -3303,10 +3378,13 @@
 
         // Apri modal login
         function openLoginModal() {
+            console.log('openLoginModal called from main script');
             // Fai sempre vedere il modal di login, anche se già loggato
             document.getElementById('loginModal').classList.add('active');
             document.getElementById('loginUsername').focus();
         }
+
+        console.log('✅ openLoginModal defined in main script');
 
         // Chiudi modal login
         function closeLoginModal() {
@@ -3314,6 +3392,23 @@
             document.getElementById('loginForm').reset();
             document.getElementById('loginError').classList.remove('active');
         }
+
+        // Sistema di notifiche - SPOSTATO QUI PRIMA DI handleLogin
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.classList.add('active'), 100);
+
+            setTimeout(() => {
+                notification.classList.remove('active');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        console.log('✅ showNotification defined');
 
         // Gestisci submit del form
         async function handleLogin(event) {
@@ -3323,19 +3418,33 @@
             const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
 
+            console.log('Attempting login...');
             const success = await login(email, password);
+            console.log('Login result:', success, 'currentUser:', currentUser);
 
             if (success) {
+                console.log('Login successful, closing modal and opening dashboard');
                 closeLoginModal();
-                showSection('dashboard');
-                showNotification('Accesso effettuato con successo!', 'success');
+
+                // Piccolo delay per assicurarsi che currentUser sia impostato
+                setTimeout(() => {
+                    console.log('Calling showSection(dashboard), currentUser:', currentUser);
+                    showSection('dashboard');
+                    showNotification('Accesso effettuato con successo!', 'success');
+                }, 100);
             } else {
+                console.log('Login failed');
                 errorDiv.textContent = 'Credenziali non valide. Riprova.';
                 errorDiv.classList.add('active');
                 document.getElementById('loginPassword').value = '';
                 document.getElementById('loginPassword').focus();
             }
         }
+
+        // Rendi handleLogin accessibile globalmente - sovrascrive lo stub
+        window.handleLogin = handleLogin;
+        handleLogin = window.handleLogin; // Assicurati che anche la variabile locale punti alla funzione reale
+        console.log('✅ handleLogin real function loaded and made global');
 
         // Aggiorna UI quando utente è loggato
         function updateUIForLoggedInUser() {
@@ -3387,27 +3496,15 @@
             }
         }
 
+        // Rendi handleChangePassword accessibile globalmente
+        window.handleChangePassword = handleChangePassword;
+
         // Gestisci logout
         function handleLogout() {
             if (confirm('Sei sicuro di voler uscire?')) {
                 logout();
                 updateUIForLoggedInUser();
             }
-        }
-
-        // Sistema di notifiche
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = `notification notification-${type}`;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-
-            setTimeout(() => notification.classList.add('active'), 100);
-
-            setTimeout(() => {
-                notification.classList.remove('active');
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
         }
 
         // Chiudi modal con ESC
@@ -3447,7 +3544,7 @@
         // Ottieni tutte le auto da Supabase
         async function getAllCarsFromStorage() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('cars')
                     .select('*')
                     .order('created_at', { ascending: false });
@@ -3463,7 +3560,7 @@
         // Ottieni auto per sezione
         async function getCarsBySection(section) {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('cars')
                     .select('*')
                     .eq('section', section)
@@ -3480,7 +3577,7 @@
         // Ottieni auto per ID
         async function getCarById(carId) {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('cars')
                     .select('*')
                     .eq('id', carId)
@@ -3497,7 +3594,7 @@
         // Aggiungi auto
         async function addCar(carData) {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('cars')
                     .insert([{
                         ...carData,
@@ -3518,7 +3615,7 @@
         // Aggiorna auto
         async function updateCar(carId, carData) {
             try {
-                const { data, error} = await supabase
+                const { data, error} = await supabaseClient
                     .from('cars')
                     .update({
                         ...carData,
@@ -3547,12 +3644,12 @@
                     const url = new URL(car.image_url);
                     const path = url.pathname.split('/storage/v1/object/public/car-images/')[1];
                     if (path) {
-                        await supabase.storage.from('car-images').remove([path]);
+                        await supabaseClient.storage.from('car-images').remove([path]);
                     }
                 }
 
                 // Elimina record dal database
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('cars')
                     .delete()
                     .eq('id', carId);
@@ -3700,14 +3797,21 @@
 
         // Carica dashboard
         async function loadDashboard() {
+            console.log('loadDashboard called, isUserLoggedIn:', isUserLoggedIn());
             if (!isUserLoggedIn()) {
+                console.log('User not logged in, redirecting to home');
                 showHome();
                 return;
             }
 
+            console.log('Loading dashboard stats and table...');
             await updateDashboardStats();
             await renderDashboardTable();
+            console.log('Dashboard loaded successfully');
         }
+
+        // Rendi loadDashboard accessibile globalmente
+        window.loadDashboard = loadDashboard;
 
         // Aggiorna statistiche (esclude auto noleggio)
         async function updateDashboardStats() {
@@ -3812,14 +3916,14 @@
                 const filePath = `${currentUser.id}/${fileName}`;
 
                 // Upload su Supabase Storage
-                const { data, error } = await supabase.storage
+                const { data, error } = await supabaseClient.storage
                     .from('car-images')
                     .upload(filePath, file);
 
                 if (error) throw error;
 
                 // Ottieni URL pubblico
-                const { data: urlData } = supabase.storage
+                const { data: urlData } = supabaseClient.storage
                     .from('car-images')
                     .getPublicUrl(filePath);
 
@@ -3851,7 +3955,7 @@
                     const url = new URL(currentUploadedImage);
                     const path = url.pathname.split('/storage/v1/object/public/car-images/')[1];
                     if (path) {
-                        await supabase.storage.from('car-images').remove([path]);
+                        await supabaseClient.storage.from('car-images').remove([path]);
                     }
                 } catch (error) {
                     console.error('Error removing image:', error);
@@ -4001,6 +4105,9 @@
                 showNotification('Errore durante il salvataggio', 'error');
             }
         }
+
+        // Rendi handleCarSubmit accessibile globalmente
+        window.handleCarSubmit = handleCarSubmit;
 
         // Apri modal eliminazione
         async function openDeleteModal(carId) {
@@ -4445,7 +4552,7 @@
         window.addEventListener('load', async () => {
             try {
                 // Verifica sessione Supabase
-                const { data: { session } } = await supabase.auth.getSession();
+                const { data: { session } } = await supabaseClient.auth.getSession();
                 currentUser = session?.user || null;
 
                 // Aggiorna UI utente
