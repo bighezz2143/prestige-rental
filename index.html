@@ -3110,15 +3110,13 @@
                 </div>
 
                 <div class="filter-group">
-                    <label class="filter-label">Categoria</label>
+                    <label class="filter-label">Modello</label>
                     <select id="filterCategory" class="filter-select">
-                        <option value="">Tutte le categorie</option>
-                        <option value="LUXURY SUV">Luxury SUV</option>
-                        <option value="SPORT SUV">Sport SUV</option>
-                        <option value="EXECUTIVE">Executive</option>
-                        <option value="PREMIUM">Premium</option>
-                        <option value="COMPACT LUXURY">Compact Luxury</option>
-                        <option value="ELECTRIC LUXURY">Electric Luxury</option>
+                        <option value="">Tutti i modelli</option>
+                        <option value="SUV">SUV</option>
+                        <option value="Berlina">Berlina</option>
+                        <option value="Coupé">Coupé</option>
+                        <option value="Top Luxury">Top Luxury</option>
                     </select>
                 </div>
 
@@ -4694,7 +4692,7 @@
             cars.forEach(car => {
                 const fullName = `${car.brand} ${car.model}`.toLowerCase();
                 const brand = car.brand;
-                const category = car.category;
+                const model = car.model;
                 const price = car.price;
 
                 const matchesSearch = searchTerm === '' ||
@@ -4703,10 +4701,10 @@
                     car.model.toLowerCase().includes(searchTerm);
 
                 const matchesBrand = selectedBrand === '' || brand === selectedBrand;
-                const matchesCategory = selectedCategory === '' || category === selectedCategory;
+                const matchesModel = selectedCategory === '' || model === selectedCategory;
                 const matchesPrice = selectedPrice === '' || price <= parseInt(selectedPrice);
 
-                if (matchesSearch && matchesBrand && matchesCategory && matchesPrice) {
+                if (matchesSearch && matchesBrand && matchesModel && matchesPrice) {
                     matchedCars.push(car);
                 }
             });
