@@ -4174,10 +4174,11 @@
             const modal = document.getElementById('unsplashModal');
             const brandInput = document.getElementById('carBrand');
             const modelInput = document.getElementById('carModel');
+            const yearInput = document.getElementById('carYear');
             const searchInput = document.getElementById('unsplashSearchInput');
 
-            // Auto-populate search - simple query for rental section (less precision needed)
-            const searchQuery = [brandInput.value, modelInput.value, 'car']
+            // Auto-populate search with brand + model + year
+            const searchQuery = [brandInput.value, modelInput.value, yearInput.value, 'car']
                 .filter(v => v && v.trim())
                 .join(' ')
                 .trim();
