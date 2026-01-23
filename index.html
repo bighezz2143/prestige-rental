@@ -4176,13 +4176,13 @@
             const modelInput = document.getElementById('carModel');
             const searchInput = document.getElementById('unsplashSearchInput');
 
-            // Auto-populate search for studio automotive photography style
-            const searchQuery = [brandInput.value, modelInput.value, 'studio', 'automotive']
+            // Auto-populate search - simple query for rental section (less precision needed)
+            const searchQuery = [brandInput.value, modelInput.value, 'car']
                 .filter(v => v && v.trim())
                 .join(' ')
                 .trim();
 
-            searchInput.value = searchQuery || 'luxury car studio automotive';
+            searchInput.value = searchQuery || 'luxury car';
             modal.classList.add('active');
 
             // Auto-search if brand and model are filled
@@ -4377,11 +4377,20 @@
         function toggleCarFields() {
             const section = document.getElementById('carSection').value;
             const acquistaFields = document.getElementById('acquistaFields');
+            const unsplashBtn = document.getElementById('unsplashBtn');
 
+            // Mostra/nascondi campi acquista
             if (section === 'acquista') {
                 acquistaFields.style.display = 'block';
             } else {
                 acquistaFields.style.display = 'none';
+            }
+
+            // Mostra bottone Unsplash SOLO per sezione NOLEGGIO
+            if (section === 'noleggio') {
+                unsplashBtn.style.display = 'block';
+            } else {
+                unsplashBtn.style.display = 'none';
             }
         }
 
@@ -5075,8 +5084,8 @@
                     <div class="image-upload-container">
                         <input type="file" id="carImage" class="form-input-file" accept="image/*" onchange="handleImageUpload(event)">
 
-                        <!-- Unsplash Search Button -->
-                        <button type="button" class="unsplash-search-btn" onclick="openUnsplashModal()">
+                        <!-- Unsplash Search Button (solo per sezione NOLEGGIO) -->
+                        <button type="button" id="unsplashBtn" class="unsplash-search-btn" onclick="openUnsplashModal()" style="display: none;">
                             🔍 Cerca su Unsplash
                         </button>
 
