@@ -4177,13 +4177,13 @@
             const yearInput = document.getElementById('carYear');
             const searchInput = document.getElementById('unsplashSearchInput');
 
-            // Auto-populate search with brand + model + year only
-            const searchQuery = [brandInput.value, modelInput.value, yearInput.value]
+            // Auto-populate search with brand + model + year + "car front view"
+            const searchQuery = [brandInput.value, modelInput.value, yearInput.value, 'car', 'front', 'view']
                 .filter(v => v && v.trim())
                 .join(' ')
                 .trim();
 
-            searchInput.value = searchQuery || 'luxury car';
+            searchInput.value = searchQuery || 'luxury car front view';
             modal.classList.add('active');
 
             // Auto-search if brand and model are filled
