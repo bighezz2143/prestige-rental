@@ -4177,8 +4177,8 @@
             const yearInput = document.getElementById('carYear');
             const searchInput = document.getElementById('unsplashSearchInput');
 
-            // Auto-populate search with brand + model + year
-            const searchQuery = [brandInput.value, modelInput.value, yearInput.value, 'car']
+            // Auto-populate search with brand + model + year only
+            const searchQuery = [brandInput.value, modelInput.value, yearInput.value]
                 .filter(v => v && v.trim())
                 .join(' ')
                 .trim();
