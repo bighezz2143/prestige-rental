@@ -4338,7 +4338,11 @@
                 document.getElementById('carId').value = car.id;
                 document.getElementById('carSection').value = car.section;
                 document.getElementById('carBrand').value = car.brand;
+
+                // Popola entrambi i campi modello (toggleCarFields mostrerà quello giusto)
                 document.getElementById('carModel').value = car.model;
+                document.getElementById('carModelSelect').value = car.model;
+
                 document.getElementById('carCategory').value = car.category;
                 document.getElementById('carYear').value = car.year || '';
                 document.getElementById('carSeats').value = car.seats || '';
@@ -4379,6 +4383,8 @@
             const section = document.getElementById('carSection').value;
             const acquistaFields = document.getElementById('acquistaFields');
             const unsplashBtn = document.getElementById('unsplashBtn');
+            const carModel = document.getElementById('carModel');
+            const carModelSelect = document.getElementById('carModelSelect');
 
             // Mostra/nascondi campi acquista
             if (section === 'acquista') {
@@ -4393,16 +4399,36 @@
             } else {
                 unsplashBtn.style.display = 'none';
             }
+
+            // Toggle campo Modello: select per NOLEGGIO, input text per altre sezioni
+            if (section === 'noleggio') {
+                carModel.style.display = 'none';
+                carModel.removeAttribute('required');
+                carModelSelect.style.display = 'block';
+                carModelSelect.setAttribute('required', 'required');
+            } else {
+                carModel.style.display = 'block';
+                carModel.setAttribute('required', 'required');
+                carModelSelect.style.display = 'none';
+                carModelSelect.removeAttribute('required');
+            }
         }
 
         // Submit form auto
         async function handleCarSubmit(event) {
             event.preventDefault();
 
+            const section = document.getElementById('carSection').value;
+
+            // Per NOLEGGIO usa carModelSelect, per altre sezioni usa carModel
+            const modelValue = section === 'noleggio'
+                ? document.getElementById('carModelSelect').value
+                : document.getElementById('carModel').value;
+
             const carData = {
-                section: document.getElementById('carSection').value,
+                section: section,
                 brand: document.getElementById('carBrand').value,
-                model: document.getElementById('carModel').value,
+                model: modelValue,
                 category: document.getElementById('carCategory').value,
                 year: document.getElementById('carYear').value,
                 seats: document.getElementById('carSeats').value,
@@ -5048,7 +5074,16 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Modello *</label>
+                        <!-- Input text per OFFERTE e ACQUISTA -->
                         <input type="text" id="carModel" class="form-input" required>
+                        <!-- Select per NOLEGGIO -->
+                        <select id="carModelSelect" class="form-input" required style="display: none;">
+                            <option value="">Seleziona categoria</option>
+                            <option value="SUV">SUV</option>
+                            <option value="Berlina">Berlina</option>
+                            <option value="Coupé">Coupé</option>
+                            <option value="Top Luxury">Top Luxury</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Categoria *</label>
