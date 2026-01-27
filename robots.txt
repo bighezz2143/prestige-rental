@@ -1,0 +1,11 @@
+# robots.txt for Gasperini Auto
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /.claude/
+
+# Sitemap location
+Sitemap: https://gasperiniauto.com/sitemap.xml
+
+# Crawl-delay for all bots
+Crawl-delay: 1
