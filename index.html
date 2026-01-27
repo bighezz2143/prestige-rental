@@ -103,6 +103,25 @@
             if (modal) modal.classList.remove('active');
         }
 
+        function closeCarDetailModal() {
+            const modal = document.getElementById('carDetailModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function closeBookingModal() {
+            const modal = document.getElementById('bookingModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function openBookingModal() {
+            console.log('openBookingModal stub');
+        }
+
+        function handleBookingSubmit(event) {
+            event.preventDefault();
+            console.log('handleBookingSubmit stub');
+        }
+
         // Stub functions per altre funzionalità (saranno definite completamente dallo script principale)
         function changePage(direction) { console.log('changePage stub:', direction); }
         function changeRentalPage(direction) { console.log('changeRentalPage stub:', direction); }
@@ -128,6 +147,17 @@
         function handleChangePassword(event) {
             event.preventDefault();
             console.log('handleChangePassword stub');
+        }
+        function toggleAnalyticsSection() {
+            console.log('toggleAnalyticsSection stub');
+        }
+        function openContactModal() {
+            const modal = document.getElementById('contactModal');
+            if (modal) modal.classList.add('active');
+        }
+        function closeContactModal() {
+            const modal = document.getElementById('contactModal');
+            if (modal) modal.classList.remove('active');
         }
 
         console.log('✅ Navigation functions loaded in HEAD!');
@@ -193,6 +223,12 @@
             color: var(--color-text);
             letter-spacing: 8px;
             line-height: 1.2;
+        }
+
+        .logo-image {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
         }
 
         .logo-subtitle {
@@ -1310,6 +1346,309 @@
             letter-spacing: 1px;
         }
 
+        /* ============================================ */
+        /* CHI SIAMO SECTION */
+        /* ============================================ */
+        .chi-siamo-section {
+            min-height: 100vh;
+            background: #fafafa;
+            padding: 6rem 5%;
+            position: relative;
+        }
+
+        .chi-siamo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .chi-siamo-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .chi-siamo-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .chi-siamo-subtitle {
+            font-size: 1.2rem;
+            color: var(--color-gray);
+        }
+
+        .chi-siamo-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .mission-block {
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .mission-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .mission-block h2 {
+            font-size: 2rem;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .mission-block p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--color-gray);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .value-card {
+            padding: 2rem 1rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-card h3 {
+            font-size: 1.3rem;
+            color: var(--color-primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .value-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--color-gray);
+        }
+
+        .media-section {
+            padding: 3.5rem 0;
+        }
+
+        .media-section h2 {
+            font-size: 2rem;
+            color: var(--color-primary);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .media-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .media-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .media-item video {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .media-item.video-item {
+            grid-column: 1 / -1;
+            margin-top: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .media-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: #ffffff;
+            padding: 1.5rem 1rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .media-note {
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            color: var(--color-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .media-note code {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+        }
+
+        .storia-block {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 3rem;
+        }
+
+        .storia-block h2 {
+            font-size: 2rem;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+        }
+
+        .storia-block p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        .storia-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .chi-siamo-cta {
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
+            border-radius: 16px;
+            padding: 4rem 3rem;
+            text-align: center;
+        }
+
+        .chi-siamo-cta h2 {
+            font-size: 2.2rem;
+            color: #ffffff;
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cta-btn.primary {
+            background: #ffffff;
+            color: #8B0000;
+        }
+
+        .cta-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 2px solid #ffffff;
+        }
+
+        .cta-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Chi Siamo */
+        @media (max-width: 968px) {
+            .chi-siamo-title {
+                font-size: 2.5rem;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .media-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .media-item.video-item {
+                grid-column: 1 / -1;
+            }
+
+            .media-item video {
+                height: 300px;
+            }
+
+            .mission-block,
+            .media-section,
+            .storia-block {
+                padding: 2rem;
+            }
+
+            .chi-siamo-cta {
+                padding: 3rem 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .chi-siamo-title {
+                font-size: 2rem;
+            }
+
+            .chi-siamo-section {
+                padding: 4rem 3%;
+            }
+
+            .media-item img,
+            .media-item video {
+                height: 200px;
+            }
+        }
+
         /* Footer */
         .footer {
             background: var(--color-primary);
@@ -1329,6 +1668,14 @@
             font-weight: 600;
             margin-bottom: 1.5rem;
             letter-spacing: 1px;
+        }
+
+        .footer-logo {
+            height: 140px;
+            width: auto;
+            object-fit: contain;
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .footer-links {
@@ -1433,6 +1780,10 @@
             .logo {
                 font-size: 1.2rem;
                 letter-spacing: 4px;
+            }
+
+            .logo-image {
+                height: 65px;
             }
 
             .logo-subtitle {
@@ -2269,6 +2620,341 @@
             }
         }
 
+        /* ============================================ */
+        /* ANALYTICS SECTION */
+        /* ============================================ */
+        .analytics-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .analytics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .analytics-header h3 {
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .analytics-info {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .analytics-option {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .analytics-option h4 {
+            color: #ffffff;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .analytics-option p {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0.5rem 0;
+        }
+
+        .analytics-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .analytics-link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .quick-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .quick-stat {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .quick-stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-stat-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        @media (max-width: 968px) {
+            .quick-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .quick-stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================ */
+        /* CAR DETAIL MODAL - 65% width */
+        /* ============================================ */
+        .modal-detail {
+            max-width: 65%;
+            width: 65%;
+            max-height: 85vh;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .detail-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            height: 100%;
+        }
+
+        .detail-image-container {
+            background: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-image-container img {
+            max-width: 100%;
+            max-height: 60vh;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .detail-info {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .detail-brand {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .detail-category {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        .detail-specs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .spec-icon {
+            font-size: 1.2rem;
+        }
+
+        .detail-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .detail-price-section {
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-price span {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
+        }
+
+        .detail-book-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .detail-book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* ============================================ */
+        /* BOOKING FORM */
+        /* ============================================ */
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* ============================================ */
+        /* CONTACT MODAL */
+        /* ============================================ */
+        .modal-contact {
+            max-width: 350px;
+        }
+
+        .contact-modal-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0;
+        }
+
+        .contact-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            width: 100%;
+        }
+
+        .whatsapp-btn,
+        .call-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.9rem 1.5rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: #ffffff;
+        }
+
+        .whatsapp-btn:hover {
+            background: #20BA5A;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .call-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .call-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* ============================================ */
+        /* RESPONSIVE - Car Detail Modal */
+        /* ============================================ */
+        @media (max-width: 968px) {
+            .modal-detail {
+                max-width: 90%;
+                width: 90%;
+            }
+
+            .detail-content {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-image-container {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .detail-specs {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .form-actions {
             display: flex;
             justify-content: flex-end;
@@ -2404,17 +3090,25 @@
             }
         }
     </style>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <ul class="nav-links">
-            <li><a href="#home">CHI SIAMO</a></li>
-            <li><a href="#home">CONTATTI</a></li>
+            <li><a href="#chi-siamo" onclick="showSection('chi-siamo'); return false;">CHI SIAMO</a></li>
+            <li><a href="#contatti" onclick="openContactModal(); return false;">CONTATTI</a></li>
         </ul>
         <div class="logo-container">
-            <div class="logo">GASPERINI AUTO</div>
-            <div class="logo-subtitle">NOLEGGIO AUTO DI LUSSO</div>
+            <img src=".claude/references/logo-gradiente-gas-6.png" alt="Gasperini Auto" class="logo-image">
         </div>
         <div class="nav-icons">
             <a href="tel:+39123456789" class="phone-number">
@@ -2688,6 +3382,103 @@
             </div>
 
             <div class="reviews-indicators" id="reviewsIndicators"></div>
+        </div>
+    </section>
+
+    <!-- Chi Siamo Section -->
+    <section id="chi-siamo" class="content-section chi-siamo-section">
+        <a href="#home" class="back-button" onclick="showHome()"><span>←</span></a>
+
+        <div class="chi-siamo-container">
+            <!-- Header -->
+            <div class="chi-siamo-header">
+                <h1 class="chi-siamo-title">Chi Siamo</h1>
+                <p class="chi-siamo-subtitle">L'eccellenza nel noleggio e vendita di auto di lusso</p>
+            </div>
+
+            <!-- Mission Section -->
+            <div class="chi-siamo-content">
+                <div class="mission-block">
+                    <div class="mission-icon">🎯</div>
+                    <h2>La Nostra Missione</h2>
+                    <p>
+                        Gasperini Auto nasce con l'obiettivo di offrire un'esperienza di mobilità esclusiva e senza compromessi.
+                        Crediamo che ogni viaggio debba essere un momento speciale, sia che si tratti di un evento importante,
+                        un viaggio d'affari o semplicemente il piacere di guidare un'auto straordinaria.
+                    </p>
+                </div>
+
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="value-icon">⭐</div>
+                        <h3>Qualità Premium</h3>
+                        <p>Selezioniamo solo i migliori veicoli luxury, mantenuti in condizioni impeccabili</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">🤝</div>
+                        <h3>Servizio Personalizzato</h3>
+                        <p>Ogni cliente è unico: offriamo soluzioni su misura per ogni esigenza</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">🔒</div>
+                        <h3>Affidabilità Totale</h3>
+                        <p>Trasparenza, sicurezza e professionalità in ogni fase del servizio</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">💎</div>
+                        <h3>Esperienza Esclusiva</h3>
+                        <p>Non solo auto, ma un'esperienza di lusso completa e indimenticabile</p>
+                    </div>
+                </div>
+
+                <!-- Photo/Video Gallery Section -->
+                <div class="media-section">
+                    <h2>La Nostra Storia in Immagini</h2>
+                    <div class="media-grid">
+                        <!-- Placeholder per foto 1 -->
+                        <div class="media-item">
+                            <img src="public/images/chi-siamo-1.jpg" alt="Gasperini Auto - Showroom" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'600\' height=\'400\'%3E%3Crect width=\'600\' height=\'400\' fill=\'%23222\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-family=\'Arial\' font-size=\'20\' fill=\'%23666\' text-anchor=\'middle\' dy=\'.3em\'%3EAggiungi Foto Showroom%3C/text%3E%3C/svg%3E'">
+                            <div class="media-caption">Il nostro showroom</div>
+                        </div>
+
+                        <!-- Placeholder per foto 2 -->
+                        <div class="media-item">
+                            <img src="public/images/chi-siamo-2.jpg" alt="Gasperini Auto - Flotta" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'600\' height=\'400\'%3E%3Crect width=\'600\' height=\'400\' fill=\'%23222\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-family=\'Arial\' font-size=\'20\' fill=\'%23666\' text-anchor=\'middle\' dy=\'.3em\'%3EAggiungi Foto Flotta%3C/text%3E%3C/svg%3E'">
+                            <div class="media-caption">La nostra flotta esclusiva</div>
+                        </div>
+
+                        <!-- Placeholder per foto 3 -->
+                        <div class="media-item">
+                            <img src="public/images/chi-siamo-3.jpg" alt="Gasperini Auto - Team" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'600\' height=\'400\'%3E%3Crect width=\'600\' height=\'400\' fill=\'%23222\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' font-family=\'Arial\' font-size=\'20\' fill=\'%23666\' text-anchor=\'middle\' dy=\'.3em\'%3EAggiungi Foto Team%3C/text%3E%3C/svg%3E'">
+                            <div class="media-caption">Il nostro team professionale</div>
+                        </div>
+
+                        <!-- Placeholder per video -->
+                        <div class="media-item video-item">
+                            <video controls poster="public/images/video-poster.jpg">
+                                <source src="public/videos/presentazione.mp4" type="video/mp4">
+                                Il tuo browser non supporta il tag video.
+                            </video>
+                            <div class="media-caption">Video presentazione aziendale</div>
+                        </div>
+                    </div>
+                    <p class="media-note">
+                        💡 <strong>Per aggiungere le tue foto/video:</strong><br>
+                        1. Salva le immagini nella cartella <code>public/images/</code> con i nomi: <code>chi-siamo-1.jpg</code>, <code>chi-siamo-2.jpg</code>, <code>chi-siamo-3.jpg</code><br>
+                        2. Salva il video nella cartella <code>public/videos/</code> con il nome: <code>presentazione.mp4</code><br>
+                        3. Ricarica la pagina e le tue immagini appariranno automaticamente!
+                    </p>
+                </div>
+
+                <!-- CTA Section -->
+                <div class="chi-siamo-cta">
+                    <h2>Pronto a Vivere l'Esperienza Gasperini Auto?</h2>
+                    <div class="cta-buttons">
+                        <button class="cta-btn primary" onclick="showSection('offerte')">Esplora la Flotta</button>
+                        <button class="cta-btn secondary" onclick="openContactModal()">📞 Contattaci</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -3300,6 +4091,13 @@
                         <div class="stat-label">Totale Veicoli</div>
                     </div>
                 </div>
+                <div class="stat-card" onclick="toggleAnalyticsSection()" style="cursor: pointer;">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-info">
+                        <div class="stat-value">Analytics</div>
+                        <div class="stat-label">Statistiche Sito</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Dashboard Controls -->
@@ -3347,6 +4145,85 @@
                     Nessun veicolo trovato
                 </div>
             </div>
+
+            <!-- Analytics Section -->
+            <div id="analyticsSection" class="analytics-section" style="display: none;">
+                <div class="analytics-header">
+                    <h3>📈 Statistiche del Sito</h3>
+                    <button class="control-btn" onclick="toggleAnalyticsSection()">Chiudi</button>
+                </div>
+
+                <div class="analytics-info">
+                    <p style="margin-bottom: 1rem;">
+                        Visualizza le statistiche di Google Analytics direttamente dalla dashboard.
+                    </p>
+
+                    <!-- Option 1: Direct Link to Google Analytics -->
+                    <div class="analytics-option">
+                        <h4>Opzione 1: Apri Google Analytics</h4>
+                        <p>Clicca qui per aprire Google Analytics in una nuova scheda:</p>
+                        <a href="https://analytics.google.com" target="_blank" class="analytics-link-btn">
+                            🔗 Apri Google Analytics
+                        </a>
+                    </div>
+
+                    <!-- Option 2: Embedded Looker Studio Report -->
+                    <div class="analytics-option" style="margin-top: 2rem;">
+                        <h4>Opzione 2: Report Integrato (Looker Studio)</h4>
+                        <p>Per vedere i dati qui nella dashboard, segui questi passaggi:</p>
+                        <ol style="color: rgba(255,255,255,0.8); line-height: 1.8; margin: 1rem 0;">
+                            <li>Vai su <a href="https://lookerstudio.google.com" target="_blank" style="color: #667eea;">Looker Studio</a></li>
+                            <li>Crea un nuovo report collegato a Google Analytics</li>
+                            <li>Clicca su "Condividi" → "Incorpora report"</li>
+                            <li>Copia l'URL del report</li>
+                            <li>Modifica il codice sostituendo "LOOKER_STUDIO_EMBED_URL" con il tuo URL</li>
+                        </ol>
+
+                        <!-- Iframe per Looker Studio (da configurare) -->
+                        <div id="lookerStudioContainer" style="display: none;">
+                            <iframe
+                                id="lookerStudioFrame"
+                                width="100%"
+                                height="800"
+                                src="LOOKER_STUDIO_EMBED_URL"
+                                frameborder="0"
+                                style="border:0; border-radius: 12px; margin-top: 1rem;"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats (Manual tracking) -->
+                    <div class="analytics-option" style="margin-top: 2rem;">
+                        <h4>Statistiche Rapide</h4>
+                        <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 0.5rem;">
+                            Una volta configurato Google Analytics, vedrai qui informazioni come:
+                        </p>
+                        <div class="quick-stats-grid">
+                            <div class="quick-stat">
+                                <div class="quick-stat-icon">👥</div>
+                                <div class="quick-stat-label">Visitatori oggi</div>
+                                <div class="quick-stat-value">-</div>
+                            </div>
+                            <div class="quick-stat">
+                                <div class="quick-stat-icon">📄</div>
+                                <div class="quick-stat-label">Pagine viste</div>
+                                <div class="quick-stat-value">-</div>
+                            </div>
+                            <div class="quick-stat">
+                                <div class="quick-stat-icon">⏱️</div>
+                                <div class="quick-stat-label">Tempo medio</div>
+                                <div class="quick-stat-value">-</div>
+                            </div>
+                            <div class="quick-stat">
+                                <div class="quick-stat-icon">🌍</div>
+                                <div class="quick-stat-label">Paesi</div>
+                                <div class="quick-stat-value">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -3354,10 +4231,7 @@
     <footer class="footer">
         <div class="footer-grid">
             <div class="footer-column">
-                <h3>GASPERINI AUTO</h3>
-                <p style="color: rgba(255, 255, 255, 0.7); line-height: 1.8; margin-top: 1rem;">
-                    Il tuo partner di fiducia per il noleggio e l'acquisto di veicoli luxury. Esperienza, professionalità e servizio esclusivo.
-                </p>
+                <img src=".claude/references/logo-gradiente-gas-6.png" alt="Gasperini Auto" class="footer-logo">
             </div>
 
             <div class="footer-column">
@@ -3375,8 +4249,6 @@
                 <ul class="footer-links">
                     <li><a href="tel:+39123456789">+39 123 456 789</a></li>
                     <li><a href="mailto:info@prestige.it">info@prestige.it</a></li>
-                    <li><a href="#">Via Montenapoleone 8, Milano</a></li>
-                    <li><a href="#">Lun-Dom: 9:00 - 20:00</a></li>
                 </ul>
             </div>
 
@@ -3676,6 +4548,27 @@
             }
         }
 
+        // Toggle Analytics Section
+        function toggleAnalyticsSection() {
+            const section = document.getElementById('analyticsSection');
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                // Scroll to analytics section
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                section.style.display = 'none';
+            }
+        }
+
+        // Contact Modal Functions
+        function openContactModal() {
+            document.getElementById('contactModal').classList.add('active');
+        }
+
+        function closeContactModal() {
+            document.getElementById('contactModal').classList.remove('active');
+        }
+
         // Chiudi modal con ESC
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
@@ -3683,11 +4576,14 @@
                 closeCarModal();
                 closeDeleteModal();
                 closeChangePasswordModal();
+                closeCarDetailModal();
+                closeBookingModal();
+                closeContactModal();
             }
         });
 
         // Chiudi modal cliccando fuori
-        ['loginModal', 'carModal', 'deleteModal', 'changePasswordModal'].forEach(modalId => {
+        ['loginModal', 'carModal', 'deleteModal', 'changePasswordModal', 'carDetailModal', 'bookingModal', 'contactModal'].forEach(modalId => {
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.addEventListener('click', (e) => {
@@ -3696,6 +4592,9 @@
                         else if (modalId === 'carModal') closeCarModal();
                         else if (modalId === 'deleteModal') closeDeleteModal();
                         else if (modalId === 'changePasswordModal') closeChangePasswordModal();
+                        else if (modalId === 'carDetailModal') closeCarDetailModal();
+                        else if (modalId === 'bookingModal') closeBookingModal();
+                        else if (modalId === 'contactModal') closeContactModal();
                     }
                 });
             }
@@ -3877,6 +4776,17 @@
                 paginationContainer.parentNode.insertBefore(pageDiv, paginationContainer);
             }
 
+            // Add click handlers to cards
+            document.querySelectorAll('#offerte .fleet-card').forEach(card => {
+                const carId = card.getAttribute('data-car-id');
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', (e) => {
+                    // Don't open if clicking on button
+                    if (e.target.classList.contains('action-button')) return;
+                    if (carId) openCarDetailModal(carId);
+                });
+            });
+
             // Aggiorna indicatori paginazione
             totalPagesNum = totalPages;
             currentPageNum = 1;
@@ -3948,6 +4858,17 @@
                     </div>
                 </div>
             `).join('');
+
+            // Add click handlers to cards
+            document.querySelectorAll('#acquista .purchase-card').forEach(card => {
+                const carId = card.getAttribute('data-car-id');
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', (e) => {
+                    // Don't open if clicking on button
+                    if (e.target.classList.contains('action-button')) return;
+                    if (carId) openCarDetailModal(carId);
+                });
+            });
         }
 
         // Sincronizza sezioni pubbliche
@@ -4621,6 +5542,165 @@
             { brand: 'Audi', model: 'Q8', category: 'SPORT SUV', price: 550 }
         ];
 
+        // ============================================
+        // CAR DETAIL MODAL
+        // ============================================
+
+        let currentDetailCarId = null;
+        let currentDetailCar = null; // Store the full car object
+
+        // Open car detail modal - accepts either carId (string) or car object directly
+        async function openCarDetailModal(carIdOrObject) {
+            let car;
+            // Check if we received an object or an ID
+            if (typeof carIdOrObject === 'object' && carIdOrObject !== null) {
+                // Direct car object passed (from hardcoded array)
+                car = carIdOrObject;
+                currentDetailCarId = null;
+            } else {
+                // Car ID passed (from database)
+                car = await getCarById(carIdOrObject);
+                currentDetailCarId = carIdOrObject;
+            }
+
+            if (!car) {
+                console.error('Car not found:', carIdOrObject);
+                return;
+            }
+
+            // Store current car object
+            currentDetailCar = car;
+
+            // Populate modal
+            document.getElementById('detailCarTitle').textContent = `${car.brand} ${car.model}`;
+            document.getElementById('detailCarBrand').textContent = car.brand;
+            document.getElementById('detailCarCategory').textContent = car.category || car.model;
+            document.getElementById('detailCarYear').textContent = car.year || 'N/A';
+            document.getElementById('detailCarSeats').textContent = car.seats || 'N/A';
+            document.getElementById('detailCarTransmission').textContent = car.transmission || 'Automatico';
+
+            // Image (supports both image_url from DB and image from array)
+            const imageEl = document.getElementById('detailCarImage');
+            const imageUrl = car.image_url || car.image;
+            if (imageUrl) {
+                imageEl.src = imageUrl;
+                imageEl.alt = `${car.brand} ${car.model}`;
+            } else {
+                // SVG placeholder image
+                imageEl.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="600" height="400"%3E%3Crect width="600" height="400" fill="%23333"/%3E%3Ctext x="50%25" y="50%25" font-family="Arial" font-size="24" fill="%23999" text-anchor="middle" dy=".3em"%3ENessuna Immagine%3C/text%3E%3C/svg%3E';
+                imageEl.alt = 'No image available';
+            }
+
+            // Auto-generate description
+            const description = generateCarDescription(car);
+            document.getElementById('detailCarDescription').textContent = description;
+
+            // Price
+            const priceEl = document.getElementById('detailCarPrice');
+            if (car.section === 'acquista') {
+                priceEl.innerHTML = `€${car.total_price || car.price} <span>prezzo totale</span>`;
+            } else {
+                priceEl.innerHTML = `€${car.price} <span>${car.price_unit || '/ giorno'}</span>`;
+            }
+
+            // Show modal
+            document.getElementById('carDetailModal').classList.add('active');
+        }
+
+        // Close car detail modal
+        function closeCarDetailModal() {
+            document.getElementById('carDetailModal').classList.remove('active');
+            currentDetailCarId = null;
+            currentDetailCar = null;
+        }
+
+        // Generate automatic description
+        function generateCarDescription(car) {
+            const parts = [];
+
+            parts.push(`${car.brand} ${car.model}`);
+
+            if (car.year) parts.push(`del ${car.year}`);
+            if (car.category) parts.push(`categoria ${car.category}`);
+            if (car.transmission) parts.push(`con cambio ${car.transmission.toLowerCase()}`);
+            if (car.seats) parts.push(`${car.seats} posti`);
+
+            // Use existing description for ACQUISTA section
+            if (car.description) {
+                return car.description;
+            }
+
+            // Generate for other sections
+            if (car.section === 'acquista') {
+                let desc = parts.join(', ') + '.';
+                if (car.km) desc += ` ${car.km} km.`;
+                if (car.engine) desc += ` Motore ${car.engine}.`;
+                if (car.power) desc += ` Potenza ${car.power}.`;
+                return desc;
+            } else {
+                return parts.join(', ') + '. Veicolo di lusso disponibile per il noleggio. Perfetto per occasioni speciali e viaggi di lavoro.';
+            }
+        }
+
+        // ============================================
+        // BOOKING MODAL
+        // ============================================
+
+        function openBookingModal() {
+            if (!currentDetailCar) {
+                console.error('No car selected for booking');
+                return;
+            }
+
+            // Store car info in hidden field
+            const carInfo = `${currentDetailCar.brand} ${currentDetailCar.model}${currentDetailCar.section ? ' - ' + currentDetailCar.section : ''}`;
+            document.getElementById('bookingCarInfo').value = carInfo;
+
+            // Close detail modal
+            closeCarDetailModal();
+
+            // Open booking modal
+            document.getElementById('bookingModal').classList.add('active');
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.remove('active');
+            document.getElementById('bookingForm').reset();
+        }
+
+        async function handleBookingSubmit(event) {
+            event.preventDefault();
+
+            const bookingData = {
+                carInfo: document.getElementById('bookingCarInfo').value,
+                name: document.getElementById('bookingName').value,
+                email: document.getElementById('bookingEmail').value,
+                phone: document.getElementById('bookingPhone').value,
+                startDate: document.getElementById('bookingStartDate').value,
+                endDate: document.getElementById('bookingEndDate').value,
+                notes: document.getElementById('bookingNotes').value || 'Nessuna nota'
+            };
+
+            console.log('Booking request:', bookingData);
+
+            // TODO: Send to backend/email service
+            // For now, show success message
+
+            closeBookingModal();
+            showNotification('Richiesta inviata con successo! Ti contatteremo presto.', 'success');
+        }
+
+        // Expose functions globally for HTML onclick handlers
+        window.openCarDetailModal = openCarDetailModal;
+        window.closeCarDetailModal = closeCarDetailModal;
+        window.generateCarDescription = generateCarDescription;
+        window.openBookingModal = openBookingModal;
+        window.closeBookingModal = closeBookingModal;
+        window.handleBookingSubmit = handleBookingSubmit;
+        window.toggleAnalyticsSection = toggleAnalyticsSection;
+        window.openContactModal = openContactModal;
+        window.closeContactModal = closeContactModal;
+
         // Get all rental cars data
         const getAllCars = () => availableCars;
 
@@ -4767,6 +5847,38 @@
             document.querySelectorAll('#rentalFleet .action-button').forEach(button => {
                 button.addEventListener('click', () => {
                     alert('Grazie per il tuo interesse! Verrai contattato dal nostro team.\n\nPer prenotazioni immediate: +39 123 456 789');
+                });
+            });
+
+            // Add click handlers to cards
+            document.querySelectorAll('#rentalFleet .fleet-card').forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', async (e) => {
+                    // Don't open if clicking on button
+                    if (e.target.classList.contains('action-button')) return;
+
+                    // Get car data from attributes
+                    const brand = card.getAttribute('data-brand');
+                    const fullName = card.getAttribute('data-name');
+                    const model = fullName ? fullName.replace(brand + ' ', '') : '';
+
+                    // First try to find in database
+                    const allCars = await getAllCarsFromStorage();
+                    let car = allCars.find(c => c.brand === brand && c.model === model && c.section === 'noleggio');
+
+                    // If not in database, find in local availableCars array
+                    if (!car) {
+                        car = availableCars.find(c => c.brand === brand && c.model === model);
+                        if (car) {
+                            // Add section property for proper display
+                            car.section = 'noleggio';
+                        }
+                    }
+
+                    if (car) {
+                        // Pass car object directly (works for both DB and array cars)
+                        openCarDetailModal(car);
+                    }
                 });
             });
         }
@@ -5242,6 +6354,126 @@
 
             <div id="unsplashError" class="unsplash-error" style="display: none;">
                 <p>Nessun risultato trovato. Prova con un'altra ricerca.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Car Detail Modal -->
+    <div id="carDetailModal" class="modal-overlay">
+        <div class="modal-container modal-detail">
+            <div class="modal-header">
+                <h2 class="modal-title" id="detailCarTitle">Mercedes AMG GT</h2>
+                <button class="modal-close" onclick="closeCarDetailModal()">×</button>
+            </div>
+
+            <div class="detail-content">
+                <!-- Left: Large Image -->
+                <div class="detail-image-container">
+                    <img id="detailCarImage" src="" alt="Car image">
+                </div>
+
+                <!-- Right: Info -->
+                <div class="detail-info">
+                    <div class="detail-brand" id="detailCarBrand">MERCEDES-BENZ</div>
+                    <div class="detail-category" id="detailCarCategory">Sport</div>
+
+                    <div class="detail-specs">
+                        <div class="spec-item">
+                            <span class="spec-icon">📅</span>
+                            <span id="detailCarYear">2024</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-icon">👥</span>
+                            <span id="detailCarSeats">2 posti</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-icon">⚙️</span>
+                            <span id="detailCarTransmission">Automatico</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-description" id="detailCarDescription">
+                        <!-- Auto-generated description -->
+                    </div>
+
+                    <div class="detail-price-section">
+                        <div class="detail-price" id="detailCarPrice">€450 <span>/ giorno</span></div>
+                        <button class="detail-book-btn" onclick="openBookingModal()">
+                            Prenota Ora
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Richiesta Prenotazione</h2>
+                <button class="modal-close" onclick="closeBookingModal()">×</button>
+            </div>
+
+            <form id="bookingForm" class="booking-form" onsubmit="handleBookingSubmit(event)">
+                <input type="hidden" id="bookingCarInfo">
+
+                <div class="form-group">
+                    <label>Nome Completo *</label>
+                    <input type="text" id="bookingName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="bookingEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Telefono *</label>
+                    <input type="tel" id="bookingPhone" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data Inizio *</label>
+                        <input type="date" id="bookingStartDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Fine *</label>
+                        <input type="date" id="bookingEndDate" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Note aggiuntive</label>
+                    <textarea id="bookingNotes" rows="3"></textarea>
+                </div>
+
+                <button type="submit" class="form-btn submit-btn">Invia Richiesta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal-overlay">
+        <div class="modal-container modal-contact">
+            <div class="modal-header">
+                <h2 class="modal-title">Contattaci</h2>
+                <button class="modal-close" onclick="closeContactModal()">×</button>
+            </div>
+
+            <div class="contact-modal-content">
+                <div class="contact-actions">
+                    <a href="https://wa.me/39123456789" target="_blank" class="whatsapp-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                        Apri WhatsApp
+                    </a>
+                    <a href="tel:+39123456789" class="call-btn">
+                        📞 Chiama Ora
+                    </a>
+                </div>
             </div>
         </div>
     </div>
