@@ -4335,11 +4335,11 @@
                         <div class="stat-label">Totale Veicoli</div>
                     </div>
                 </div>
-                <div class="stat-card" onclick="toggleAnalyticsSection()" style="cursor: pointer;">
-                    <div class="stat-icon">📈</div>
+                <div class="stat-card" onclick="toggleBookingsSection()" style="cursor: pointer;">
+                    <div class="stat-icon">📋</div>
                     <div class="stat-info">
-                        <div class="stat-value">Analytics</div>
-                        <div class="stat-label">Statistiche Sito</div>
+                        <div class="stat-value" id="statBookings">0</div>
+                        <div class="stat-label">Prenotazioni</div>
                     </div>
                 </div>
             </div>
@@ -4464,6 +4464,35 @@
                                 <div class="quick-stat-value">-</div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookings Section -->
+            <div id="bookingsSection" class="analytics-section" style="display: none;">
+                <div class="analytics-header">
+                    <h3>📋 Prenotazioni Ricevute</h3>
+                    <button class="control-btn" onclick="toggleBookingsSection()">Chiudi</button>
+                </div>
+
+                <div class="dashboard-table-container">
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Auto</th>
+                                <th>Email</th>
+                                <th>Telefono</th>
+                                <th>Stato</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsTableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                    <div id="bookingsNoResults" class="dashboard-no-results" style="display: none;">
+                        Nessuna prenotazione ricevuta
                     </div>
                 </div>
             </div>
@@ -4799,6 +4828,131 @@
                 section.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
                 section.style.display = 'none';
+            }
+        }
+
+        // ============================================
+        // BOOKINGS MANAGEMENT
+        // ============================================
+
+        async function toggleBookingsSection() {
+            const section = document.getElementById('bookingsSection');
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                await loadBookings();
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                section.style.display = 'none';
+            }
+        }
+
+        async function loadBookings() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('bookings')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                renderBookingsTable(data || []);
+
+                // Update stat card
+                document.getElementById('statBookings').textContent = data?.length || 0;
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+                showNotification('Errore durante il caricamento delle prenotazioni', 'error');
+            }
+        }
+
+        function renderBookingsTable(bookings) {
+            const tbody = document.getElementById('bookingsTableBody');
+            const noResults = document.getElementById('bookingsNoResults');
+
+            if (!bookings || bookings.length === 0) {
+                tbody.innerHTML = '';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            noResults.style.display = 'none';
+            tbody.innerHTML = bookings.map(booking => {
+                const date = new Date(booking.created_at);
+                const formattedDate = date.toLocaleDateString('it-IT') + ' ' + date.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+
+                const statusColors = {
+                    'pending': '#FFA500',
+                    'contacted': '#667eea',
+                    'completed': '#22C55E',
+                    'cancelled': '#EF4444'
+                };
+
+                const statusLabels = {
+                    'pending': 'In attesa',
+                    'contacted': 'Contattato',
+                    'completed': 'Completato',
+                    'cancelled': 'Annullato'
+                };
+
+                return `
+                    <tr>
+                        <td>${formattedDate}</td>
+                        <td>${escapeHtml(booking.car_info)}</td>
+                        <td>${booking.email || '-'}</td>
+                        <td>${booking.phone || '-'}</td>
+                        <td>
+                            <select onchange="updateBookingStatus('${booking.id}', this.value)"
+                                    style="background: ${statusColors[booking.status]}; color: white; border: none; padding: 0.5rem; border-radius: 6px; font-weight: 600;">
+                                ${Object.keys(statusLabels).map(status =>
+                                    `<option value="${status}" ${booking.status === status ? 'selected' : ''}>${statusLabels[status]}</option>`
+                                ).join('')}
+                            </select>
+                        </td>
+                        <td class="table-actions">
+                            <button class="action-icon-btn delete-btn" onclick="deleteBooking('${booking.id}')" title="Elimina">
+                                🗑️
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function updateBookingStatus(bookingId, newStatus) {
+            try {
+                const { error } = await supabaseClient
+                    .from('bookings')
+                    .update({ status: newStatus })
+                    .eq('id', bookingId);
+
+                if (error) throw error;
+
+                showNotification('Stato aggiornato con successo', 'success');
+            } catch (error) {
+                console.error('Error updating booking status:', error);
+                showNotification('Errore durante l\'aggiornamento dello stato', 'error');
+                await loadBookings(); // Reload to reset
+            }
+        }
+
+        async function deleteBooking(bookingId) {
+            if (!confirm('Sei sicuro di voler eliminare questa prenotazione?')) {
+                return;
+            }
+
+            try {
+                const { error } = await supabaseClient
+                    .from('bookings')
+                    .delete()
+                    .eq('id', bookingId);
+
+                if (error) throw error;
+
+                showNotification('Prenotazione eliminata con successo', 'success');
+                await loadBookings();
+            } catch (error) {
+                console.error('Error deleting booking:', error);
+                showNotification('Errore durante l\'eliminazione', 'error');
             }
         }
 
@@ -5201,6 +5355,20 @@
             document.getElementById('statOfferte').textContent = offerte;
             document.getElementById('statAcquista').textContent = acquista;
             document.getElementById('statTotal').textContent = total;
+
+            // Load bookings count
+            try {
+                const { data, error } = await supabaseClient
+                    .from('bookings')
+                    .select('id', { count: 'exact', head: true });
+
+                if (!error) {
+                    document.getElementById('statBookings').textContent = data?.length || 0;
+                }
+            } catch (error) {
+                console.error('Error loading bookings count:', error);
+                document.getElementById('statBookings').textContent = '0';
+            }
         }
 
         // Renderizza tabella (esclude auto noleggio)
@@ -6012,18 +6180,33 @@
             }
 
             const bookingData = {
-                carInfo: document.getElementById('bookingCarInfo').value,
-                email: email || 'Non fornita',
-                phone: phone || 'Non fornito'
+                car_info: document.getElementById('bookingCarInfo').value,
+                email: email || null,
+                phone: phone || null,
+                status: 'pending',
+                created_at: new Date().toISOString()
             };
 
-            console.log('Booking request:', bookingData);
+            try {
+                // Save to Supabase database
+                const { data, error } = await supabaseClient
+                    .from('bookings')
+                    .insert([bookingData])
+                    .select()
+                    .single();
 
-            // TODO: Send to backend/email service
-            // For now, show success message
+                if (error) {
+                    console.error('Error saving booking:', error);
+                    throw error;
+                }
 
-            closeBookingModal();
-            showNotification('Richiesta inviata con successo! Ti contatteremo presto.', 'success');
+                console.log('Booking saved:', data);
+                closeBookingModal();
+                showNotification('Richiesta inviata con successo! Ti contatteremo presto.', 'success');
+            } catch (error) {
+                console.error('Booking submission error:', error);
+                showNotification('Errore durante l\'invio. Riprova o contattaci direttamente.', 'error');
+            }
         }
 
         // Expose functions globally for HTML onclick handlers
@@ -6035,6 +6218,9 @@
         window.closeBookingModal = closeBookingModal;
         window.handleBookingSubmit = handleBookingSubmit;
         window.toggleAnalyticsSection = toggleAnalyticsSection;
+        window.toggleBookingsSection = toggleBookingsSection;
+        window.updateBookingStatus = updateBookingStatus;
+        window.deleteBooking = deleteBooking;
         window.openContactModal = openContactModal;
         window.closeContactModal = closeContactModal;
 
