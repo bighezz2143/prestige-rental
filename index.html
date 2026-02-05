@@ -2389,44 +2389,14 @@
            ============================================ */
 
         .modal-booking {
-            max-width: 550px;
+            max-width: 500px;
+            padding: 2rem;
         }
 
         .booking-modal-content {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
-        }
-
-        .booking-car-info {
-            text-align: center;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            border-radius: 12px;
-            border: 1px solid rgba(102, 126, 234, 0.2);
-        }
-
-        .booking-subtitle {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
-            margin: 0 0 0.5rem 0;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .booking-car-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 0;
-        }
-
-        .booking-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            gap: 1rem;
         }
 
         .booking-options {
@@ -2445,7 +2415,7 @@
         .booking-form {
             display: flex;
             flex-direction: column;
-            gap: 1.2rem;
+            gap: 1rem;
         }
 
         .booking-form .form-label {
@@ -4521,7 +4491,6 @@
                 <h3>CONTATTI</h3>
                 <ul class="footer-links">
                     <li><a href="tel:+393911560480">+39 391 156 0480</a></li>
-                    <li><a href="mailto:info@prestige.it">info@prestige.it</a></li>
                 </ul>
             </div>
 
@@ -5072,7 +5041,7 @@
                 pageDiv.innerHTML = pageCars.map(car => {
                     const imageUrl = (car.images && car.images.length > 0) ? car.images[0] : car.image_url;
                     return `
-                    <div class="fleet-card" data-car-id="${car.id}" data-brand="${escapeHtml(car.brand)}" data-model="${escapeHtml(car.model)}" data-section="${escapeHtml(car.section) || 'offerte'}">
+                    <div class="fleet-card" data-car-id="${car.id}" data-brand="${escapeHtml(car.brand)}" data-model="${escapeHtml(car.model)}" data-section="${escapeHtml(car.section || 'offerte')}">
                         <div class="fleet-image" ${imageUrl ? `style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"` : ''}>
                             <div class="fleet-category">${car.category}</div>
                         </div>
@@ -6010,7 +5979,6 @@
             // Store car info
             const carInfo = `${car.brand} ${car.model}${car.section ? ' - ' + car.section : ''}`;
             document.getElementById('bookingCarInfo').value = carInfo;
-            document.getElementById('bookingCarName').textContent = `${car.brand} ${car.model}`;
 
             // Update WhatsApp button with car info
             const whatsappMessage = `Ciao! Sono interessato a: ${car.brand} ${car.model}`;
@@ -6762,13 +6730,6 @@
             </div>
 
             <div class="booking-modal-content">
-                <div class="booking-car-info">
-                    <p class="booking-subtitle">Hai scelto:</p>
-                    <h3 id="bookingCarName" class="booking-car-name">-</h3>
-                </div>
-
-                <div class="booking-divider"></div>
-
                 <div class="booking-options">
                     <p class="booking-text">Scegli come desideri essere contattato:</p>
 
