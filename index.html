@@ -2384,6 +2384,153 @@
             max-width: 450px;
         }
 
+        /* ============================================
+           BOOKING MODAL STYLES
+           ============================================ */
+
+        .modal-booking {
+            max-width: 550px;
+        }
+
+        .booking-modal-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .booking-car-info {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 12px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .booking-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0 0 0.5rem 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .booking-car-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+        }
+
+        .booking-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        .booking-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .booking-text {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .booking-form .form-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .booking-form .form-label svg {
+            opacity: 0.7;
+        }
+
+        .booking-submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 1rem;
+            padding: 1.2rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .booking-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .booking-or {
+            text-align: center;
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .booking-or::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        .booking-or span {
+            position: relative;
+            background: #1a1a1a;
+            padding: 0 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .whatsapp-booking-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 1.2rem 2rem;
+            font-family: var(--font-main);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-booking-btn:hover {
+            background: #20BA5A;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-booking-btn svg {
+            width: 28px;
+            height: 28px;
+        }
+
         .car-form {
             display: flex;
             flex-direction: column;
@@ -2489,6 +2636,64 @@
         .remove-image-btn:hover {
             background: rgba(255, 59, 48, 0.2);
             border-color: rgba(255, 59, 48, 0.5);
+        }
+
+        /* Griglia per preview multiple immagini */
+        .images-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            transition: var(--transition);
+            min-height: 200px;
+        }
+
+        .images-preview-grid:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .image-preview-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-single-image-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 59, 48, 0.9);
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            padding: 0;
+        }
+
+        .remove-single-image-btn:hover {
+            background: #ff3b30;
+            transform: scale(1.1);
         }
 
         /* ============================================
@@ -3990,17 +4195,6 @@
                         <option value="Top Luxury">Top Luxury</option>
                     </select>
                 </div>
-
-                <div class="filter-group">
-                    <label class="filter-label">Prezzo max (al giorno)</label>
-                    <select id="filterPrice" class="filter-select">
-                        <option value="">Qualsiasi prezzo</option>
-                        <option value="500">Fino a €500</option>
-                        <option value="700">Fino a €700</option>
-                        <option value="1000">Fino a €1000</option>
-                        <option value="1500">Fino a €1500</option>
-                    </select>
-                </div>
             </div>
 
             <div class="filter-buttons">
@@ -4213,7 +4407,6 @@
                             <th>Modello</th>
                             <th>Categoria</th>
                             <th>Anno</th>
-                            <th>Prezzo</th>
                             <th>Azioni</th>
                         </tr>
                     </thead>
@@ -4747,7 +4940,8 @@
                     .insert([{
                         ...carData,
                         user_id: currentUser.id,
-                        image_url: carData.image || null
+                        image_url: carData.images && carData.images.length > 0 ? carData.images[0] : null, // Prima immagine per retrocompatibilità
+                        images: carData.images || [] // Array di tutte le immagini
                     }])
                     .select()
                     .single();
@@ -4763,12 +4957,20 @@
         // Aggiorna auto
         async function updateCar(carId, carData) {
             try {
+                const updateData = {
+                    ...carData,
+                    updated_at: new Date().toISOString()
+                };
+
+                // Aggiungi image_url e images se presenti
+                if (carData.images && carData.images.length > 0) {
+                    updateData.image_url = carData.images[0]; // Prima immagine per retrocompatibilità
+                    updateData.images = carData.images; // Array di tutte le immagini
+                }
+
                 const { data, error} = await supabaseClient
                     .from('cars')
-                    .update({
-                        ...carData,
-                        updated_at: new Date().toISOString()
-                    })
+                    .update(updateData)
                     .eq('id', carId)
                     .select()
                     .single();
@@ -4784,16 +4986,43 @@
         // Elimina auto
         async function deleteCar(carId) {
             try {
-                // Prima recupera l'auto per ottenere l'image_url
+                // Prima recupera l'auto per ottenere le immagini
                 const car = await getCarById(carId);
 
-                // Elimina immagine da Storage se esiste
+                // Elimina tutte le immagini da Storage se esistono
+                const imagesToDelete = [];
+
+                // Aggiungi immagini dall'array
+                if (car?.images && Array.isArray(car.images)) {
+                    car.images.forEach(imageUrl => {
+                        if (imageUrl && imageUrl.includes('supabase')) {
+                            try {
+                                const url = new URL(imageUrl);
+                                const path = url.pathname.split('/storage/v1/object/public/car-images/')[1];
+                                if (path) imagesToDelete.push(path);
+                            } catch (e) {
+                                console.error('Error parsing image URL:', e);
+                            }
+                        }
+                    });
+                }
+
+                // Retrocompatibilità: controlla anche image_url
                 if (car?.image_url && car.image_url.includes('supabase')) {
-                    const url = new URL(car.image_url);
-                    const path = url.pathname.split('/storage/v1/object/public/car-images/')[1];
-                    if (path) {
-                        await supabaseClient.storage.from('car-images').remove([path]);
+                    try {
+                        const url = new URL(car.image_url);
+                        const path = url.pathname.split('/storage/v1/object/public/car-images/')[1];
+                        if (path && !imagesToDelete.includes(path)) {
+                            imagesToDelete.push(path);
+                        }
+                    } catch (e) {
+                        console.error('Error parsing image_url:', e);
                     }
+                }
+
+                // Elimina tutte le immagini
+                if (imagesToDelete.length > 0) {
+                    await supabaseClient.storage.from('car-images').remove(imagesToDelete);
                 }
 
                 // Elimina record dal database
@@ -4808,6 +5037,14 @@
                 console.error('Error deleting car:', error.message);
                 return false;
             }
+        }
+
+        // Helper function to escape HTML attributes
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         // Renderizza sezione Offerte da localStorage
@@ -4832,9 +5069,11 @@
                 const endIndex = startIndex + CARS_PER_PAGE;
                 const pageCars = cars.slice(startIndex, endIndex);
 
-                pageDiv.innerHTML = pageCars.map(car => `
-                    <div class="fleet-card" data-car-id="${car.id}">
-                        <div class="fleet-image" ${car.image_url ? `style="background-image: url('${car.image_url}'); background-size: cover; background-position: center;"` : ''}>
+                pageDiv.innerHTML = pageCars.map(car => {
+                    const imageUrl = (car.images && car.images.length > 0) ? car.images[0] : car.image_url;
+                    return `
+                    <div class="fleet-card" data-car-id="${car.id}" data-brand="${escapeHtml(car.brand)}" data-model="${escapeHtml(car.model)}" data-section="${escapeHtml(car.section) || 'offerte'}">
+                        <div class="fleet-image" ${imageUrl ? `style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"` : ''}>
                             <div class="fleet-category">${car.category}</div>
                         </div>
                         <div class="fleet-info">
@@ -4846,12 +5085,11 @@
                                 <span>${car.transmission}</span>
                             </div>
                             <div class="fleet-footer">
-                                <div class="fleet-price">€${car.price} <span>${car.price_unit || '/ giorno'}</span></div>
-                                <button class="action-button">Prenota</button>
+                                <button class="action-button" onclick="openBookingModalFromCard(this, event)">Prenota</button>
                             </div>
                         </div>
                     </div>
-                `).join('');
+                `}).join('');
 
                 paginationContainer.parentNode.insertBefore(pageDiv, paginationContainer);
             }
@@ -4881,12 +5119,12 @@
             const allCars = await getAllCarsFromStorage();
             availableCars.length = 0; // Svuota array
             allCars.forEach(car => {
+                const imageUrl = (car.images && car.images.length > 0) ? car.images[0] : car.image_url;
                 availableCars.push({
                     brand: car.brand,
                     model: car.model,
                     category: car.category,
-                    price: car.price,
-                    image: car.image_url || null
+                    image: imageUrl || null
                 });
             });
 
@@ -4904,9 +5142,11 @@
 
             if (!purchaseGrid) return;
 
-            purchaseGrid.innerHTML = cars.map(car => `
-                <div class="purchase-card" data-car-id="${car.id}">
-                    <div class="purchase-image" ${car.image_url ? `style="background-image: url('${car.image_url}'); background-size: cover; background-position: center;"` : ''}></div>
+            purchaseGrid.innerHTML = cars.map(car => {
+                const imageUrl = (car.images && car.images.length > 0) ? car.images[0] : car.image_url;
+                return `
+                <div class="purchase-card" data-car-id="${car.id}" data-brand="${escapeHtml(car.brand)}" data-model="${escapeHtml(car.model)}" data-section="acquista">
+                    <div class="purchase-image" ${imageUrl ? `style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"` : ''}></div>
                     <div class="purchase-info">
                         ${car.badge ? `<span class="purchase-badge">${car.badge}</span>` : ''}
                         <h3 class="purchase-name">${car.brand} ${car.model}</h3>
@@ -4932,12 +5172,11 @@
                         </div>
 
                         <div class="purchase-footer">
-                            <div class="purchase-price">€${car.total_price ? car.total_price.toLocaleString() : car.price}</div>
-                            <button class="action-button">Contattaci</button>
+                            <button class="action-button" onclick="openBookingModalFromCard(this, event)">Contattaci</button>
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
 
             // Add click handlers to cards
             document.querySelectorAll('#acquista .purchase-card').forEach(card => {
@@ -5018,7 +5257,6 @@
                     <td>${car.model}</td>
                     <td>${car.category}</td>
                     <td>${car.year || '-'}</td>
-                    <td>€${car.price}${car.priceUnit || ''}</td>
                     <td class="table-actions">
                         <button class="action-icon-btn edit-btn" onclick="openCarModal('edit', '${car.id}')" title="Modifica">
                             ✏️
@@ -5056,73 +5294,93 @@
         }
 
         // Apri modal auto (add/edit)
-        // Variabile per memorizzare l'immagine caricata temporaneamente
-        let currentUploadedImage = null;
+        // Variabile per memorizzare le immagini caricate temporaneamente
+        let currentUploadedImages = [];
 
-        // Gestisce l'upload dell'immagine
-        async function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        // Gestisce l'upload delle immagini
+        async function handleImagesUpload(event) {
+            const files = Array.from(event.target.files);
+            if (files.length === 0) return;
 
-            // Validazione dimensione (max 5MB)
             const maxSize = 5 * 1024 * 1024; // 5MB
-            if (file.size > maxSize) {
-                showNotification('Immagine troppo grande. Max 5MB.', 'error');
-                event.target.value = '';
-                return;
-            }
 
-            // Validazione tipo
-            if (!file.type.startsWith('image/')) {
-                showNotification('File non valido. Solo immagini.', 'error');
-                event.target.value = '';
-                return;
-            }
+            for (const file of files) {
+                // Validazione dimensione
+                if (file.size > maxSize) {
+                    showNotification(`${file.name}: File troppo grande. Max 5MB.`, 'error');
+                    continue;
+                }
 
-            try {
-                // Genera path unico
-                const fileExt = file.name.split('.').pop();
-                const fileName = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
-                const filePath = `${currentUser.id}/${fileName}`;
+                // Validazione tipo
+                if (!file.type.startsWith('image/')) {
+                    showNotification(`${file.name}: File non valido. Solo immagini.`, 'error');
+                    continue;
+                }
 
-                // Upload su Supabase Storage
-                const { data, error } = await supabaseClient.storage
-                    .from('car-images')
-                    .upload(filePath, file);
-
-                if (error) throw error;
-
-                // Ottieni URL pubblico
-                const { data: urlData } = supabaseClient.storage
-                    .from('car-images')
-                    .getPublicUrl(filePath);
-
-                currentUploadedImage = urlData.publicUrl;
-                displayImagePreview(currentUploadedImage);
-
-                showNotification('Immagine caricata con successo!', 'success');
-            } catch (error) {
-                console.error('Upload error:', error.message);
-                showNotification('Errore durante il caricamento immagine', 'error');
-                event.target.value = '';
-            }
-        }
-
-        // Mostra preview dell'immagine
-        function displayImagePreview(imageUrl) {
-            const preview = document.getElementById('imagePreview');
-            const removeBtn = document.getElementById('removeImageBtn');
-
-            preview.innerHTML = `<img src="${imageUrl}" alt="Preview" style="max-width: 100%; height: auto;">`;
-            removeBtn.style.display = 'block';
-        }
-
-        // Rimuove l'immagine (supporta sia upload manuali che Unsplash)
-        async function removeImage() {
-            // Se c'è un'immagine caricata su Supabase, elimina da Storage
-            if (currentUploadedImage && currentUploadedImage.includes('supabase')) {
                 try {
-                    const url = new URL(currentUploadedImage);
+                    // Genera path unico
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
+                    const filePath = `${currentUser.id}/${fileName}`;
+
+                    // Upload su Supabase Storage
+                    const { data, error } = await supabaseClient.storage
+                        .from('car-images')
+                        .upload(filePath, file);
+
+                    if (error) throw error;
+
+                    // Ottieni URL pubblico
+                    const { data: urlData } = supabaseClient.storage
+                        .from('car-images')
+                        .getPublicUrl(filePath);
+
+                    currentUploadedImages.push(urlData.publicUrl);
+                } catch (error) {
+                    console.error('Upload error:', error.message);
+                    showNotification(`Errore caricamento ${file.name}`, 'error');
+                }
+            }
+
+            displayImagesPreview();
+            if (currentUploadedImages.length > 0) {
+                showNotification(`${currentUploadedImages.length} immagine/i caricata/e con successo!`, 'success');
+            }
+        }
+
+        // Mostra preview delle immagini
+        function displayImagesPreview() {
+            const grid = document.getElementById('imagesPreviewGrid');
+
+            if (currentUploadedImages.length === 0) {
+                grid.innerHTML = `
+                    <div class="image-placeholder">
+                        <span class="image-icon">📷</span>
+                        <p>Clicca per caricare immagini</p>
+                        <p class="image-hint">JPG, PNG o WEBP (max 2MB per immagine)</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = currentUploadedImages.map((imageUrl, index) => `
+                <div class="image-preview-item">
+                    <img src="${imageUrl}" alt="Preview ${index + 1}">
+                    <button type="button" class="remove-single-image-btn" onclick="removeSingleImage(${index})" title="Rimuovi">
+                        ×
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Rimuove una singola immagine
+        async function removeSingleImage(index) {
+            const imageUrl = currentUploadedImages[index];
+
+            // Se è un'immagine caricata su Supabase, elimina da Storage
+            if (imageUrl && imageUrl.includes('supabase')) {
+                try {
+                    const url = new URL(imageUrl);
                     const path = url.pathname.split('/storage/v1/object/public/car-images/')[1];
                     if (path) {
                         await supabaseClient.storage.from('car-images').remove([path]);
@@ -5131,28 +5389,23 @@
                     console.error('Error removing image:', error);
                 }
             }
-            // Note: Unsplash images are external URLs, no deletion needed
 
-            currentUploadedImage = null;
-            document.getElementById('carImage').value = '';
-            document.getElementById('imagePreview').innerHTML = `
-                <div class="image-placeholder">
-                    <span class="image-icon">📷</span>
-                    <p>Clicca per caricare un'immagine</p>
-                    <p class="image-hint">JPG, PNG o WEBP (max 5MB)</p>
-                </div>
-            `;
-            document.getElementById('removeImageBtn').style.display = 'none';
+            currentUploadedImages.splice(index, 1);
+            displayImagesPreview();
+            showNotification('Immagine rimossa', 'success');
         }
 
         // Click sulla preview per aprire file picker
         document.addEventListener('DOMContentLoaded', function() {
-            const imagePreview = document.getElementById('imagePreview');
-            const fileInput = document.getElementById('carImage');
+            const imagesPreviewGrid = document.getElementById('imagesPreviewGrid');
+            const fileInput = document.getElementById('carImages');
 
-            if (imagePreview && fileInput) {
-                imagePreview.addEventListener('click', function() {
-                    fileInput.click();
+            if (imagesPreviewGrid && fileInput) {
+                imagesPreviewGrid.addEventListener('click', function(e) {
+                    // Non aprire il file picker se si clicca sul bottone di rimozione
+                    if (!e.target.closest('.remove-single-image-btn')) {
+                        fileInput.click();
+                    }
                 });
             }
         });
@@ -5294,17 +5547,14 @@
 
         // Select Unsplash image
         function selectUnsplashImage(imageUrl, photographerName, photoLink) {
-            // Store the Unsplash URL in the same variable used for manual uploads
-            currentUploadedImage = imageUrl;
+            // Add the Unsplash URL to the images array
+            currentUploadedImages.push(imageUrl);
 
             // Display preview using existing function
-            displayImagePreview(imageUrl);
+            displayImagesPreview();
 
             // Close Unsplash modal
             closeUnsplashModal();
-
-            // Clear manual file input (mutual exclusivity)
-            document.getElementById('carImage').value = '';
 
             // Show success notification with attribution
             showNotification(
@@ -5323,8 +5573,8 @@
 
             form.reset();
             currentEditCarId = null;
-            currentUploadedImage = null;
-            await removeImage(); // Reset image preview
+            currentUploadedImages = [];
+            displayImagesPreview(); // Reset images preview
 
             if (mode === 'edit' && carId) {
                 const car = await getCarById(carId);
@@ -5346,17 +5596,18 @@
                 document.getElementById('carYear').value = car.year || '';
                 document.getElementById('carSeats').value = car.seats || '';
                 document.getElementById('carTransmission').value = car.transmission || '';
-                document.getElementById('carPrice').value = car.price;
 
-                // Carica immagine esistente (image_url da Supabase)
-                if (car.image_url) {
-                    currentUploadedImage = car.image_url;
-                    displayImagePreview(car.image_url);
+                // Carica immagini esistenti
+                if (car.images && Array.isArray(car.images)) {
+                    currentUploadedImages = [...car.images];
+                } else if (car.image_url) {
+                    // Retrocompatibilità: se esiste image_url (vecchio formato), convertilo in array
+                    currentUploadedImages = [car.image_url];
                 }
+                displayImagesPreview();
 
                 if (car.section === 'acquista') {
                     document.getElementById('carBadge').value = car.badge || '';
-                    document.getElementById('carTotalPrice').value = car.total_price || '';
                     document.getElementById('carKm').value = car.km || '';
                     document.getElementById('carEngine').value = car.engine || '';
                     document.getElementById('carPower').value = car.power || '';
@@ -5431,20 +5682,17 @@
                 category: document.getElementById('carCategory').value,
                 year: document.getElementById('carYear').value,
                 seats: document.getElementById('carSeats').value,
-                transmission: document.getElementById('carTransmission').value,
-                price: parseInt(document.getElementById('carPrice').value),
-                price_unit: '/ giorno'
+                transmission: document.getElementById('carTransmission').value
             };
 
-            // Aggiungi immagine se presente
-            if (currentUploadedImage) {
-                carData.image = currentUploadedImage; // Sarà salvato come image_url
+            // Aggiungi immagini se presenti
+            if (currentUploadedImages && currentUploadedImages.length > 0) {
+                carData.images = currentUploadedImages; // Array di URL immagini
             }
 
             // Campi per acquista
             if (carData.section === 'acquista') {
                 carData.badge = document.getElementById('carBadge').value;
-                carData.total_price = parseInt(document.getElementById('carTotalPrice').value) || null;
                 carData.km = document.getElementById('carKm').value;
                 carData.engine = document.getElementById('carEngine').value;
                 carData.power = document.getElementById('carPower').value;
@@ -5535,12 +5783,7 @@
             });
         });
 
-        // Action buttons
-        document.querySelectorAll('.action-button').forEach(button => {
-            button.addEventListener('click', () => {
-                alert('Grazie per il tuo interesse! Verrai contattato dal nostro team.\n\nPer prenotazioni immediate: +39 391 156 0480');
-            });
-        });
+        // Action buttons now use inline onclick handlers to open booking modal
 
         // Pagination for Offerte section
         let currentPageNum = 1;
@@ -5582,7 +5825,6 @@
         const autocompleteSuggestions = document.getElementById('autocompleteSuggestions');
         const filterBrand = document.getElementById('filterBrand');
         const filterCategory = document.getElementById('filterCategory');
-        const filterPrice = document.getElementById('filterPrice');
         const rentalFleet = document.getElementById('rentalFleet');
         const noResults = document.getElementById('noResults');
         const rentalPagination = document.getElementById('rentalPagination');
@@ -5659,9 +5901,15 @@
             document.getElementById('detailCarSeats').textContent = car.seats || 'N/A';
             document.getElementById('detailCarTransmission').textContent = car.transmission || 'Automatico';
 
-            // Image (supports both image_url from DB and image from array)
+            // Image (supports images array, image_url from DB, and image from array)
             const imageEl = document.getElementById('detailCarImage');
-            const imageUrl = car.image_url || car.image;
+            let imageUrl = null;
+            if (car.images && Array.isArray(car.images) && car.images.length > 0) {
+                imageUrl = car.images[0]; // Usa la prima immagine dall'array
+            } else {
+                imageUrl = car.image_url || car.image;
+            }
+
             if (imageUrl) {
                 imageEl.src = imageUrl;
                 imageEl.alt = `${car.brand} ${car.model}`;
@@ -5675,12 +5923,10 @@
             const description = generateCarDescription(car);
             document.getElementById('detailCarDescription').textContent = description;
 
-            // Price
+            // Hide price section
             const priceEl = document.getElementById('detailCarPrice');
-            if (car.section === 'acquista') {
-                priceEl.innerHTML = `€${car.total_price || car.price} <span>prezzo totale</span>`;
-            } else {
-                priceEl.innerHTML = `€${car.price} <span>${car.price_unit || '/ giorno'}</span>`;
+            if (priceEl) {
+                priceEl.style.display = 'none';
             }
 
             // Show modal
@@ -5726,18 +5972,55 @@
         // BOOKING MODAL
         // ============================================
 
-        function openBookingModal() {
-            if (!currentDetailCar) {
+        // Helper function to open booking modal from card button
+        function openBookingModalFromCard(buttonElement, evt) {
+            // Stop event propagation if event is provided
+            if (evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+            }
+
+            // Find the parent card
+            const card = buttonElement.closest('[data-brand]');
+            if (!card) {
+                console.error('Card not found');
+                return;
+            }
+
+            // Extract car data from data attributes
+            const carData = {
+                brand: card.getAttribute('data-brand') || '',
+                model: card.getAttribute('data-model') || '',
+                section: card.getAttribute('data-section') || '',
+                id: card.getAttribute('data-car-id') || null
+            };
+
+            openBookingModal(carData);
+        }
+
+        function openBookingModal(carData = null) {
+            // Use provided car data or fallback to currentDetailCar
+            const car = carData || currentDetailCar;
+
+            if (!car) {
                 console.error('No car selected for booking');
                 return;
             }
 
-            // Store car info in hidden field
-            const carInfo = `${currentDetailCar.brand} ${currentDetailCar.model}${currentDetailCar.section ? ' - ' + currentDetailCar.section : ''}`;
+            // Store car info
+            const carInfo = `${car.brand} ${car.model}${car.section ? ' - ' + car.section : ''}`;
             document.getElementById('bookingCarInfo').value = carInfo;
+            document.getElementById('bookingCarName').textContent = `${car.brand} ${car.model}`;
 
-            // Close detail modal
-            closeCarDetailModal();
+            // Update WhatsApp button with car info
+            const whatsappMessage = `Ciao! Sono interessato a: ${car.brand} ${car.model}`;
+            const whatsappUrl = `https://wa.me/393911560480?text=${encodeURIComponent(whatsappMessage)}`;
+            document.getElementById('bookingWhatsAppBtn').href = whatsappUrl;
+
+            // Close detail modal if open
+            if (currentDetailCar) {
+                closeCarDetailModal();
+            }
 
             // Open booking modal
             document.getElementById('bookingModal').classList.add('active');
@@ -5751,14 +6034,19 @@
         async function handleBookingSubmit(event) {
             event.preventDefault();
 
+            const email = document.getElementById('bookingEmail').value;
+            const phone = document.getElementById('bookingPhone').value;
+
+            // Validate that at least one contact method is provided
+            if (!email && !phone) {
+                showNotification('Inserisci almeno un metodo di contatto (email o telefono)', 'error');
+                return;
+            }
+
             const bookingData = {
                 carInfo: document.getElementById('bookingCarInfo').value,
-                name: document.getElementById('bookingName').value,
-                email: document.getElementById('bookingEmail').value,
-                phone: document.getElementById('bookingPhone').value,
-                startDate: document.getElementById('bookingStartDate').value,
-                endDate: document.getElementById('bookingEndDate').value,
-                notes: document.getElementById('bookingNotes').value || 'Nessuna nota'
+                email: email || 'Non fornita',
+                phone: phone || 'Non fornito'
             };
 
             console.log('Booking request:', bookingData);
@@ -5775,6 +6063,7 @@
         window.closeCarDetailModal = closeCarDetailModal;
         window.generateCarDescription = generateCarDescription;
         window.openBookingModal = openBookingModal;
+        window.openBookingModalFromCard = openBookingModalFromCard;
         window.closeBookingModal = closeBookingModal;
         window.handleBookingSubmit = handleBookingSubmit;
         window.toggleAnalyticsSection = toggleAnalyticsSection;
@@ -5844,7 +6133,6 @@
             const searchTerm = searchBar.value.toLowerCase().trim();
             const selectedBrand = filterBrand.value;
             const selectedCategory = filterCategory.value;
-            const selectedPrice = filterPrice.value;
 
             const cars = getAllCars();
             const matchedCars = [];
@@ -5853,7 +6141,6 @@
                 const fullName = `${car.brand} ${car.model}`.toLowerCase();
                 const brand = car.brand;
                 const model = car.model;
-                const price = car.price;
 
                 const matchesSearch = searchTerm === '' ||
                     fullName.includes(searchTerm) ||
@@ -5862,9 +6149,8 @@
 
                 const matchesBrand = selectedBrand === '' || brand === selectedBrand;
                 const matchesModel = selectedCategory === '' || model === selectedCategory;
-                const matchesPrice = selectedPrice === '' || price <= parseInt(selectedPrice);
 
-                if (matchesSearch && matchesBrand && matchesModel && matchesPrice) {
+                if (matchesSearch && matchesBrand && matchesModel) {
                     matchedCars.push(car);
                 }
             });
@@ -5891,8 +6177,9 @@
             const endIndex = startIndex + CARS_PER_PAGE;
             const carsToShow = allMatchedCars.slice(startIndex, endIndex);
 
-            rentalFleet.innerHTML = carsToShow.map(car => `
-                <div class="fleet-card" data-brand="${car.brand}" data-category="${car.category}" data-price="${car.price}" data-name="${car.brand} ${car.model}">
+            rentalFleet.innerHTML = carsToShow.map(car => {
+                return `
+                <div class="fleet-card" data-brand="${escapeHtml(car.brand)}" data-model="${escapeHtml(car.model)}" data-category="${escapeHtml(car.category)}" data-section="noleggio" data-name="${escapeHtml(car.brand + ' ' + car.model)}">
                     <div class="fleet-image" ${car.image ? `style="background-image: url('${car.image}'); background-size: cover; background-position: center;"` : ''}></div>
                     <div class="fleet-info">
                         <div class="fleet-category">${car.category}</div>
@@ -5901,11 +6188,10 @@
                             <span>🚗 Automatico</span>
                             <span>⚡ Diesel</span>
                         </div>
-                        <div class="fleet-price">€${car.price} <span>/ giorno</span></div>
-                        <button class="action-button">Prenota Ora</button>
+                        <button class="action-button" onclick="openBookingModalFromCard(this, event)">Prenota Ora</button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
 
             rentalFleet.style.display = 'grid';
             noResults.style.display = 'none';
@@ -5923,12 +6209,7 @@
                 rentalPagination.style.display = 'none';
             }
 
-            // Re-attach action button listeners
-            document.querySelectorAll('#rentalFleet .action-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    alert('Grazie per il tuo interesse! Verrai contattato dal nostro team.\n\nPer prenotazioni immediate: +39 391 156 0480');
-                });
-            });
+            // Action buttons now use inline onclick handlers
 
             // Add click handlers to cards
             document.querySelectorAll('#rentalFleet .fleet-card').forEach(card => {
@@ -5989,7 +6270,6 @@
             searchBar.value = '';
             filterBrand.value = '';
             filterCategory.value = '';
-            filterPrice.value = '';
             autocompleteSuggestions.classList.remove('active');
             rentalFleet.innerHTML = '';
             rentalFleet.style.display = 'none';
@@ -6297,34 +6577,24 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Prezzo Giornaliero (€) *</label>
-                        <input type="number" id="carPrice" class="form-input" required min="0">
-                    </div>
-                </div>
-
-                <!-- Upload Immagine -->
+                <!-- Upload Immagini -->
                 <div class="form-group">
-                    <label class="form-label">Immagine Veicolo</label>
+                    <label class="form-label">Immagini Veicolo</label>
                     <div class="image-upload-container">
-                        <input type="file" id="carImage" class="form-input-file" accept="image/*" onchange="handleImageUpload(event)">
+                        <input type="file" id="carImages" class="form-input-file" accept="image/*" multiple onchange="handleImagesUpload(event)">
 
                         <!-- Unsplash Search Button (solo per sezione NOLEGGIO) -->
                         <button type="button" id="unsplashBtn" class="unsplash-search-btn" onclick="openUnsplashModal()" style="display: none;">
                             🔍 Cerca su Unsplash
                         </button>
 
-                        <div class="image-preview" id="imagePreview">
+                        <div class="images-preview-grid" id="imagesPreviewGrid">
                             <div class="image-placeholder">
                                 <span class="image-icon">📷</span>
-                                <p>Clicca per caricare un'immagine</p>
-                                <p class="image-hint">JPG, PNG o WEBP (max 2MB)</p>
+                                <p>Clicca per caricare immagini</p>
+                                <p class="image-hint">JPG, PNG o WEBP (max 2MB per immagine)</p>
                             </div>
                         </div>
-                        <button type="button" class="remove-image-btn" id="removeImageBtn" onclick="removeImage()" style="display: none;">
-                            🗑️ Rimuovi Immagine
-                        </button>
                     </div>
                 </div>
 
@@ -6335,10 +6605,6 @@
                             <label class="form-label">Badge</label>
                             <input type="text" id="carBadge" class="form-input"
                                    placeholder="Es: COME NUOVO, OCCASIONE">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Prezzo Totale (€)</label>
-                            <input type="number" id="carTotalPrice" class="form-input" min="0">
                         </div>
                     </div>
                     <div class="form-row">
@@ -6489,48 +6755,64 @@
 
     <!-- Booking Modal -->
     <div id="bookingModal" class="modal-overlay">
-        <div class="modal-container">
+        <div class="modal-container modal-booking">
             <div class="modal-header">
-                <h2 class="modal-title">Richiesta Prenotazione</h2>
+                <h2 class="modal-title">Prenota Ora</h2>
                 <button class="modal-close" onclick="closeBookingModal()">×</button>
             </div>
 
-            <form id="bookingForm" class="booking-form" onsubmit="handleBookingSubmit(event)">
-                <input type="hidden" id="bookingCarInfo">
-
-                <div class="form-group">
-                    <label>Nome Completo *</label>
-                    <input type="text" id="bookingName" required>
+            <div class="booking-modal-content">
+                <div class="booking-car-info">
+                    <p class="booking-subtitle">Hai scelto:</p>
+                    <h3 id="bookingCarName" class="booking-car-name">-</h3>
                 </div>
 
-                <div class="form-group">
-                    <label>Email *</label>
-                    <input type="email" id="bookingEmail" required>
-                </div>
+                <div class="booking-divider"></div>
 
-                <div class="form-group">
-                    <label>Telefono *</label>
-                    <input type="tel" id="bookingPhone" required>
-                </div>
+                <div class="booking-options">
+                    <p class="booking-text">Scegli come desideri essere contattato:</p>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Data Inizio *</label>
-                        <input type="date" id="bookingStartDate" required>
+                    <form id="bookingForm" class="booking-form" onsubmit="handleBookingSubmit(event)">
+                        <input type="hidden" id="bookingCarInfo">
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                Email
+                            </label>
+                            <input type="email" id="bookingEmail" class="form-input" placeholder="tua@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                                Telefono
+                            </label>
+                            <input type="tel" id="bookingPhone" class="form-input" placeholder="+39 123 456 7890">
+                        </div>
+
+                        <button type="submit" class="form-btn submit-btn booking-submit-btn">
+                            📧 Invia Richiesta
+                        </button>
+                    </form>
+
+                    <div class="booking-or">
+                        <span>oppure</span>
                     </div>
-                    <div class="form-group">
-                        <label>Data Fine *</label>
-                        <input type="date" id="bookingEndDate" required>
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <label>Note aggiuntive</label>
-                    <textarea id="bookingNotes" rows="3"></textarea>
+                    <a href="#" id="bookingWhatsAppBtn" class="whatsapp-booking-btn" target="_blank">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                        Scrivici su WhatsApp
+                    </a>
                 </div>
-
-                <button type="submit" class="form-btn submit-btn">Invia Richiesta</button>
-            </form>
+            </div>
         </div>
     </div>
 
