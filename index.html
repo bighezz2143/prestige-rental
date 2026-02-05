@@ -6183,9 +6183,10 @@
                 car_info: document.getElementById('bookingCarInfo').value,
                 email: email || null,
                 phone: phone || null,
-                status: 'pending',
-                created_at: new Date().toISOString()
+                status: 'pending'
             };
+
+            console.log('Attempting to save booking:', bookingData);
 
             try {
                 // Save to Supabase database
@@ -6197,6 +6198,7 @@
 
                 if (error) {
                     console.error('Error saving booking:', error);
+                    console.error('Error details:', error.message, error.code, error.details);
                     throw error;
                 }
 
