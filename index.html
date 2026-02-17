@@ -638,8 +638,8 @@
 
         .fleet-image {
             width: 100%;
-            height: 260px;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            height: 350px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
             position: relative;
             overflow: hidden;
             display: flex;
@@ -1739,15 +1739,6 @@
             font-size: 0.85rem;
         }
 
-        /* Mobile Menu */
-        .mobile-menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--color-text);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
 
         /* Responsive */
         @media (max-width: 1024px) {
@@ -1762,10 +1753,6 @@
 
             .nav-links {
                 display: none;
-            }
-
-            .mobile-menu-toggle {
-                display: block;
             }
 
             .fleet-grid,
@@ -2967,11 +2954,76 @@
             border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        .detail-carousel {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .detail-image-container img {
             max-width: 100%;
             max-height: 60vh;
             object-fit: contain;
             border-radius: 12px;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-prev {
+            left: 0.3rem;
+        }
+
+        .carousel-next {
+            right: 0.3rem;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .carousel-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-indicator.active {
+            background: white;
+            width: 30px;
+            border-radius: 5px;
         }
 
         .detail-info {
@@ -3322,7 +3374,7 @@
         "addressLocality": "Milano",
         "addressCountry": "IT"
       },
-      "telephone": "+393911560480",
+      "telephone": "+393911560489",
       "url": "https://gasperiniauto.com",
       "priceRange": "€€€",
       "aggregateRating": {
@@ -3366,13 +3418,12 @@
             <img src=".claude/references/logo-gradiente-gas-6.png" alt="Gasperini Auto - Noleggio Auto di Lusso Milano" class="logo-image">
         </div>
         <div class="nav-icons">
-            <a href="tel:+393911560480" class="phone-number">
+            <a href="tel:+393911560489" class="phone-number">
                 <span>📞</span>
-                <span>+39 391 156 0480</span>
+                <span>+39 391 156 0489</span>
             </a>
             <a href="#" class="nav-icon" id="userIcon" onclick="openLoginModal(); return false;">👤</a>
         </div>
-        <button class="mobile-menu-toggle">☰</button>
     </nav>
 
     <!-- Hero Section with Cards -->
@@ -3746,371 +3797,7 @@
             <p class="section-subtitle">Scopri la nostra selezione di veicoli esclusivi</p>
         </div>
 
-        <!-- Pagina 1 -->
-        <div class="fleet-grid page-content active" data-page="1">
-            <!-- Auto 1 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Sport</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">MERCEDES-BENZ</div>
-                    <h3 class="fleet-name">AMG GT</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>2 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€450 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 2 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Sport</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">BMW</div>
-                    <h3 class="fleet-name">M8 Competition</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>4 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€380 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 3 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">SUV</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">PORSCHE</div>
-                    <h3 class="fleet-name">Cayenne Turbo</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>5 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€420 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 4 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Lusso</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">AUDI</div>
-                    <h3 class="fleet-name">RS7 Sportback</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>5 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€360 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 5 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">SUV</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">RANGE ROVER</div>
-                    <h3 class="fleet-name">Sport SVR</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>5 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€390 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 6 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Sport</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">PORSCHE</div>
-                    <h3 class="fleet-name">911 Turbo S</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>4 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€550 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 7 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Lusso</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">MERCEDES-BENZ</div>
-                    <h3 class="fleet-name">S 500</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>5 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€340 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 8 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Sport</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">AUDI</div>
-                    <h3 class="fleet-name">R8 V10</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>2 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€480 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 9 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">SUV</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">LAMBORGHINI</div>
-                    <h3 class="fleet-name">Urus</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>5 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€650 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pagina 2 -->
-        <div class="fleet-grid page-content" data-page="2">
-            <!-- Auto 10 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Lusso</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">BMW</div>
-                    <h3 class="fleet-name">X7 M60i</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>7 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€380 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 11 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Sport</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">FERRARI</div>
-                    <h3 class="fleet-name">Roma</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>4 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€850 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 12 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">SUV</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">AUDI</div>
-                    <h3 class="fleet-name">RS Q8</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>5 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€410 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 13 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Lusso</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">BENTLEY</div>
-                    <h3 class="fleet-name">Continental GT</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>4 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€720 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 14 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Sport</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">MASERATI</div>
-                    <h3 class="fleet-name">MC20</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>2 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€680 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 15 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">SUV</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">MERCEDES-BENZ</div>
-                    <h3 class="fleet-name">GLE 63 AMG</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>5 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€430 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 16 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Sport</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">McLAREN</div>
-                    <h3 class="fleet-name">720S</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>2 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€920 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 17 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Lusso</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">ROLLS-ROYCE</div>
-                    <h3 class="fleet-name">Ghost</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>5 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€1200 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auto 18 -->
-            <div class="fleet-card">
-                <div class="fleet-image">
-                    <div class="fleet-category">Sport</div>
-                </div>
-                <div class="fleet-info">
-                    <div class="fleet-brand">LAMBORGHINI</div>
-                    <h3 class="fleet-name">Huracán EVO</h3>
-                    <div class="fleet-features">
-                        <span>2024</span>
-                        <span>2 posti</span>
-                        <span>Automatico</span>
-                    </div>
-                    <div class="fleet-footer">
-                        <div class="fleet-price">€780 <span>/ giorno</span></div>
-                        <button class="action-button">Prenota</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Le auto verranno caricate dinamicamente dal database -->
 
         <!-- Paginazione -->
         <div class="pagination-container">
@@ -4519,7 +4206,7 @@
             <div class="footer-column">
                 <h3>CONTATTI</h3>
                 <ul class="footer-links">
-                    <li><a href="tel:+393911560480">+39 391 156 0480</a></li>
+                    <li><a href="tel:+393911560489">+39 391 156 0489</a></li>
                 </ul>
             </div>
 
@@ -5058,14 +4745,16 @@
         // Aggiungi auto
         async function addCar(carData) {
             try {
+                const dataToInsert = {
+                    ...carData,
+                    user_id: currentUser.id,
+                    image_url: carData.images && carData.images.length > 0 ? carData.images[0] : null,
+                    images: carData.images || []
+                };
+
                 const { data, error } = await supabaseClient
                     .from('cars')
-                    .insert([{
-                        ...carData,
-                        user_id: currentUser.id,
-                        image_url: carData.images && carData.images.length > 0 ? carData.images[0] : null, // Prima immagine per retrocompatibilità
-                        images: carData.images || [] // Array di tutte le immagini
-                    }])
+                    .insert([dataToInsert])
                     .select()
                     .single();
 
@@ -5087,8 +4776,8 @@
 
                 // Aggiungi image_url e images se presenti
                 if (carData.images && carData.images.length > 0) {
-                    updateData.image_url = carData.images[0]; // Prima immagine per retrocompatibilità
-                    updateData.images = carData.images; // Array di tutte le immagini
+                    updateData.image_url = carData.images[0]; // Prima immagine
+                    updateData.images = carData.images; // Array completo
                 }
 
                 const { data, error} = await supabaseClient
@@ -5171,6 +4860,30 @@
         }
 
         // Renderizza sezione Offerte da localStorage
+        // Aggiungi click handlers a tutte le card
+        function addCardClickHandlers() {
+            document.querySelectorAll('#offerte .fleet-card').forEach(card => {
+                const carId = card.getAttribute('data-car-id');
+                console.log('🎯 Adding click handler to card with ID:', carId);
+                card.style.cursor = 'pointer';
+
+                // Rimuovi listener precedenti (se esistono)
+                const newCard = card.cloneNode(true);
+                card.parentNode.replaceChild(newCard, card);
+
+                newCard.addEventListener('click', (e) => {
+                    // Don't open if clicking on button
+                    if (e.target.classList.contains('action-button')) return;
+                    console.log('🖱️ Card clicked! Car ID:', carId);
+                    if (carId) {
+                        openCarDetailModal(carId);
+                    } else {
+                        console.error('❌ No car ID found on clicked card');
+                    }
+                });
+            });
+        }
+
         async function renderOfferteSection() {
             const cars = await getCarsBySection('offerte');
             const CARS_PER_PAGE = 9;
@@ -5217,16 +4930,8 @@
                 paginationContainer.parentNode.insertBefore(pageDiv, paginationContainer);
             }
 
-            // Add click handlers to cards
-            document.querySelectorAll('#offerte .fleet-card').forEach(card => {
-                const carId = card.getAttribute('data-car-id');
-                card.style.cursor = 'pointer';
-                card.addEventListener('click', (e) => {
-                    // Don't open if clicking on button
-                    if (e.target.classList.contains('action-button')) return;
-                    if (carId) openCarDetailModal(carId);
-                });
-            });
+            // Aggiungi click handlers dopo aver creato le card
+            setTimeout(() => addCardClickHandlers(), 100);
 
             // Aggiorna indicatori paginazione
             totalPagesNum = totalPages;
@@ -5735,10 +5440,10 @@
                 document.getElementById('carTransmission').value = car.transmission || '';
 
                 // Carica immagini esistenti
-                if (car.images && Array.isArray(car.images)) {
+                if (car.images && Array.isArray(car.images) && car.images.length > 0) {
                     currentUploadedImages = [...car.images];
                 } else if (car.image_url) {
-                    // Retrocompatibilità: se esiste image_url (vecchio formato), convertilo in array
+                    // Retrocompatibilità: se esiste solo image_url, usalo
                     currentUploadedImages = [car.image_url];
                 }
                 displayImagesPreview();
@@ -6007,6 +5712,8 @@
 
         let currentDetailCarId = null;
         let currentDetailCar = null; // Store the full car object
+        let currentDetailImages = []; // Store car images for carousel
+        let currentImageIndex = 0; // Current image index in carousel
 
         // Open car detail modal - accepts either carId (string) or car object directly
         async function openCarDetailModal(carIdOrObject) {
@@ -6038,23 +5745,41 @@
             document.getElementById('detailCarSeats').textContent = car.seats || 'N/A';
             document.getElementById('detailCarTransmission').textContent = car.transmission || 'Automatico';
 
-            // Image (supports images array, image_url from DB, and image from array)
-            const imageEl = document.getElementById('detailCarImage');
-            let imageUrl = null;
-            if (car.images && Array.isArray(car.images) && car.images.length > 0) {
-                imageUrl = car.images[0]; // Usa la prima immagine dall'array
-            } else {
-                imageUrl = car.image_url || car.image;
+            // Setup image carousel
+            currentDetailImages = [];
+
+            // Handle images field (could be array or JSON string from database)
+            if (car.images) {
+                if (Array.isArray(car.images)) {
+                    currentDetailImages = car.images.filter(img => img); // Remove null/empty
+                } else if (typeof car.images === 'string') {
+                    try {
+                        const parsed = JSON.parse(car.images);
+                        if (Array.isArray(parsed)) {
+                            currentDetailImages = parsed.filter(img => img);
+                        }
+                    } catch (e) {
+                        console.error('Error parsing images JSON:', e);
+                    }
+                }
             }
 
-            if (imageUrl) {
-                imageEl.src = imageUrl;
-                imageEl.alt = `${car.brand} ${car.model}`;
-            } else {
-                // SVG placeholder image
-                imageEl.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="600" height="400"%3E%3Crect width="600" height="400" fill="%23333"/%3E%3Ctext x="50%25" y="50%25" font-family="Arial" font-size="24" fill="%23999" text-anchor="middle" dy=".3em"%3ENessuna Immagine%3C/text%3E%3C/svg%3E';
-                imageEl.alt = 'No image available';
+            // Fallback to single image fields
+            if (currentDetailImages.length === 0 && car.image_url) {
+                currentDetailImages = [car.image_url];
+            } else if (currentDetailImages.length === 0 && car.image) {
+                currentDetailImages = [car.image];
             }
+
+            // Default placeholder if no images
+            if (currentDetailImages.length === 0) {
+                currentDetailImages = ['data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="600" height="400"%3E%3Crect width="600" height="400" fill="%23333"/%3E%3Ctext x="50%25" y="50%25" font-family="Arial" font-size="24" fill="%23999" text-anchor="middle" dy=".3em"%3ENessuna Immagine%3C/text%3E%3C/svg%3E'];
+            }
+
+            console.log('🖼️ Detail modal images:', currentDetailImages.length, currentDetailImages);
+
+            currentImageIndex = 0;
+            updateDetailImage();
 
             // Auto-generate description
             const description = generateCarDescription(car);
@@ -6070,11 +5795,71 @@
             document.getElementById('carDetailModal').classList.add('active');
         }
 
+        // Update detail image and carousel controls
+        function updateDetailImage() {
+            const imageEl = document.getElementById('detailCarImage');
+            const prevBtn = document.querySelector('.carousel-prev');
+            const nextBtn = document.querySelector('.carousel-next');
+            const indicatorsContainer = document.getElementById('carouselIndicators');
+
+            console.log('🔄 updateDetailImage - Total images:', currentDetailImages.length, 'Current index:', currentImageIndex);
+
+            // Update image
+            imageEl.src = currentDetailImages[currentImageIndex];
+            imageEl.alt = currentDetailCar ? `${currentDetailCar.brand} ${currentDetailCar.model}` : 'Car image';
+
+            // Show/hide navigation buttons
+            if (currentDetailImages.length > 1) {
+                console.log('✅ Showing carousel buttons (multiple images)');
+                prevBtn.style.display = 'block';
+                nextBtn.style.display = 'block';
+            } else {
+                console.log('⚠️ Hiding carousel buttons (single image)');
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+            }
+
+            // Update indicators
+            if (currentDetailImages.length > 1) {
+                indicatorsContainer.innerHTML = currentDetailImages.map((_, index) =>
+                    `<div class="carousel-indicator ${index === currentImageIndex ? 'active' : ''}" onclick="goToDetailImage(${index})"></div>`
+                ).join('');
+            } else {
+                indicatorsContainer.innerHTML = '';
+            }
+        }
+
+        // Change detail image (direction: -1 for prev, 1 for next)
+        function changeDetailImage(direction) {
+            currentImageIndex += direction;
+
+            // Wrap around
+            if (currentImageIndex < 0) {
+                currentImageIndex = currentDetailImages.length - 1;
+            } else if (currentImageIndex >= currentDetailImages.length) {
+                currentImageIndex = 0;
+            }
+
+            updateDetailImage();
+        }
+
+        // Go to specific image
+        function goToDetailImage(index) {
+            currentImageIndex = index;
+            updateDetailImage();
+        }
+
+        // Make carousel functions globally accessible
+        window.changeDetailImage = changeDetailImage;
+        window.goToDetailImage = goToDetailImage;
+
         // Close car detail modal
         function closeCarDetailModal() {
             document.getElementById('carDetailModal').classList.remove('active');
             currentDetailCarId = null;
             currentDetailCar = null;
+            currentDetailImages = [];
+            currentImageIndex = 0;
         }
 
         // Generate automatic description
@@ -6552,12 +6337,20 @@
 
                 // Migrazione one-time da localStorage (se necessario)
                 await migrateLocalStorageToSupabase();
-
-                // Sincronizza sezioni pubbliche
-                await syncPublicSections();
             } catch (error) {
                 console.error('Initialization error:', error.message);
                 console.log('Il sito funziona comunque. Configura Supabase per abilitare tutte le funzionalità.');
+            }
+
+            // Sincronizza sezioni pubbliche (sempre eseguito, anche senza login)
+            try {
+                await syncPublicSections();
+
+                // Aggiungi click handlers alle card dopo il rendering
+                console.log('🔧 Adding click handlers to cards...');
+                addCardClickHandlers();
+            } catch (error) {
+                console.error('Error syncing public sections:', error.message);
             }
 
             // Inizializzazioni esistenti (sempre eseguite)
@@ -6869,9 +6662,14 @@
             </div>
 
             <div class="detail-content">
-                <!-- Left: Large Image -->
+                <!-- Left: Image Carousel -->
                 <div class="detail-image-container">
-                    <img id="detailCarImage" src="" alt="Car image">
+                    <div class="detail-carousel">
+                        <img id="detailCarImage" src="" alt="Car image">
+                        <button class="carousel-btn carousel-prev" onclick="changeDetailImage(-1)" style="display: none;">‹</button>
+                        <button class="carousel-btn carousel-next" onclick="changeDetailImage(1)" style="display: none;">›</button>
+                        <div class="carousel-indicators" id="carouselIndicators"></div>
+                    </div>
                 </div>
 
                 <!-- Right: Info -->
@@ -6981,7 +6779,7 @@
                         </svg>
                         Apri WhatsApp
                     </a>
-                    <a href="tel:+393911560480" class="call-btn">
+                    <a href="tel:+393911560489" class="call-btn">
                         📞 Chiama Ora
                     </a>
                 </div>

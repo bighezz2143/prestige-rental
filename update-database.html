@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aggiorna Database Auto</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .container {
+            background: #2a2a2a;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .info {
+            background: #333;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        #log {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success {
+            color: #4ade80;
+        }
+        .error {
+            color: #ef4444;
+        }
+        .warning {
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Aggiorna Database Auto</h1>
+
+        <div class="info">
+            <p><strong>⚠️ ATTENZIONE:</strong> Questo script eliminerà TUTTE le auto dalla sezione "offerte" e le sostituirà con le 25 nuove auto.</p>
+            <p>Questa operazione NON può essere annullata.</p>
+        </div>
+
+        <button id="updateBtn" onclick="updateDatabase()">Aggiorna Database</button>
+
+        <div id="log"></div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://hlyxgqmpkjupsndpidin.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhseXhncW1wa2p1cHNuZHBpZGluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg5MjAyNzYsImV4cCI6MjA4NDQ5NjI3Nn0.5vbEzGkR7FJvrqanla2UnuYntRsQX6KFd_MjJoSMDlg';
+
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const newCars = [
+            { brand: 'AUDI', model: 'R8', category: 'Sport', seats: '2', year: '2024', transmission: 'Automatico', price: '480' },
+            { brand: 'AUDI', model: 'RS6', category: 'Sport', seats: '5', year: '2024', transmission: 'Automatico', price: '420' },
+            { brand: 'AUDI', model: 'RSQ8', category: 'SUV', seats: '5', year: '2024', transmission: 'Automatico', price: '410' },
+            { brand: 'AUDI', model: 'RS3', category: 'Sport', seats: '5', year: '2024', transmission: 'Automatico', price: '320' },
+            { brand: 'PORSCHE', model: 'Macan', category: 'SUV', seats: '5', year: '2024', transmission: 'Automatico', price: '350' },
+            { brand: 'PORSCHE', model: 'Cayenne', category: 'SUV', seats: '5', year: '2024', transmission: 'Automatico', price: '420' },
+            { brand: 'PORSCHE', model: '911', category: 'Sport', seats: '4', year: '2024', transmission: 'Automatico', price: '520' },
+            { brand: 'PORSCHE', model: 'Targa 4S', category: 'Sport', seats: '4', year: '2024', transmission: 'Automatico', price: '550' },
+            { brand: 'PORSCHE', model: 'GT3 RS', category: 'Sport', seats: '2', year: '2024', transmission: 'Automatico', price: '750' },
+            { brand: 'LAMBORGHINI', model: 'Urus', category: 'SUV', seats: '5', year: '2024', transmission: 'Automatico', price: '650' },
+            { brand: 'LAMBORGHINI', model: 'Huracan', category: 'Sport', seats: '2', year: '2024', transmission: 'Automatico', price: '780' },
+            { brand: 'LAMBORGHINI', model: 'Revuelto', category: 'Sport', seats: '2', year: '2024', transmission: 'Automatico', price: '1100' },
+            { brand: 'FERRARI', model: 'Purosangue', category: 'SUV', seats: '5', year: '2024', transmission: 'Automatico', price: '1300' },
+            { brand: 'FERRARI', model: 'GTC4', category: 'Sport', seats: '4', year: '2024', transmission: 'Automatico', price: '900' },
+            { brand: 'FERRARI', model: '488', category: 'Sport', seats: '2', year: '2024', transmission: 'Automatico', price: '850' },
+            { brand: 'FERRARI', model: 'California', category: 'Sport', seats: '4', year: '2024', transmission: 'Automatico', price: '800' },
+            { brand: 'FERRARI', model: '812', category: 'Sport', seats: '2', year: '2024', transmission: 'Automatico', price: '950' },
+            { brand: 'MERCEDES-BENZ', model: 'Classe G AMG', category: 'SUV', seats: '5', year: '2024', transmission: 'Automatico', price: '500' },
+            { brand: 'MERCEDES-BENZ', model: 'Classe A45 AMG', category: 'Sport', seats: '5', year: '2024', transmission: 'Automatico', price: '340' },
+            { brand: 'MERCEDES-BENZ', model: 'Classe S', category: 'Lusso', seats: '5', year: '2024', transmission: 'Automatico', price: '380' },
+            { brand: 'ALFA ROMEO', model: 'Stelvio Quadrifoglio', category: 'SUV', seats: '5', year: '2024', transmission: 'Automatico', price: '330' },
+            { brand: 'ALFA ROMEO', model: 'Giulia Quadrifoglio', category: 'Sport', seats: '5', year: '2024', transmission: 'Automatico', price: '310' },
+            { brand: 'BMW', model: 'M2', category: 'Sport', seats: '4', year: '2024', transmission: 'Automatico', price: '350' },
+            { brand: 'BMW', model: 'M3', category: 'Sport', seats: '5', year: '2024', transmission: 'Automatico', price: '380' },
+            { brand: 'BMW', model: 'M4', category: 'Sport', seats: '4', year: '2024', transmission: 'Automatico', price: '390' }
+        ];
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'success' ? 'success' : type === 'error' ? 'error' : type === 'warning' ? 'warning' : '';
+            logDiv.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        async function updateDatabase() {
+            const btn = document.getElementById('updateBtn');
+            btn.disabled = true;
+
+            try {
+                log('🔐 Verifico autenticazione...', 'info');
+
+                // Controlla se l'utente è autenticato
+                const { data: { session }, error: authError } = await supabaseClient.auth.getSession();
+
+                if (authError || !session) {
+                    log('❌ ERRORE: Devi essere autenticato per eseguire questa operazione.', 'error');
+                    log('➡️ Vai su index.html, fai login come admin, poi torna qui.', 'warning');
+                    btn.disabled = false;
+                    return;
+                }
+
+                log(`✅ Autenticato come: ${session.user.email}`, 'success');
+                log('', 'info');
+
+                // Step 1: Elimina tutte le auto dalla sezione "offerte"
+                log('🗑️ Eliminazione auto esistenti dalla sezione "offerte"...', 'info');
+                const { data: deletedCars, error: deleteError } = await supabaseClient
+                    .from('cars')
+                    .delete()
+                    .eq('section', 'offerte')
+                    .select();
+
+                if (deleteError) {
+                    throw new Error(`Errore durante l'eliminazione: ${deleteError.message}`);
+                }
+
+                log(`✅ Eliminate ${deletedCars ? deletedCars.length : 0} auto`, 'success');
+                log('', 'info');
+
+                // Step 2: Inserisci le nuove auto
+                log('➕ Inserimento nuove auto...', 'info');
+                let successCount = 0;
+                let errorCount = 0;
+
+                for (const car of newCars) {
+                    try {
+                        const carData = {
+                            section: 'offerte',
+                            brand: car.brand,
+                            model: car.model,
+                            category: car.category,
+                            year: car.year,
+                            seats: car.seats,
+                            transmission: car.transmission,
+                            price: car.price,
+                            user_id: session.user.id,
+                            image_url: null
+                        };
+
+                        const { data: insertedData, error: insertError } = await supabaseClient
+                            .from('cars')
+                            .insert([carData])
+                            .select();
+
+                        if (insertError) {
+                            log(`✗ Dettagli errore: ${JSON.stringify(insertError)}`, 'error');
+                            throw insertError;
+                        }
+
+                        successCount++;
+                        log(`✓ Aggiunta: ${car.brand} ${car.model}`, 'success');
+                    } catch (err) {
+                        errorCount++;
+                        log(`✗ Errore con ${car.brand} ${car.model}: ${err.message}`, 'error');
+                        console.error('Errore completo:', err);
+                    }
+                }
+
+                log('', 'info');
+                log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+                log(`🎉 COMPLETATO!`, 'success');
+                log(`✅ Auto inserite con successo: ${successCount}`, 'success');
+                if (errorCount > 0) {
+                    log(`❌ Errori: ${errorCount}`, 'error');
+                }
+                log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+                log('', 'info');
+                log('✨ Puoi chiudere questa pagina e aggiornare il sito principale.', 'info');
+
+            } catch (error) {
+                log(`❌ ERRORE CRITICO: ${error.message}`, 'error');
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
