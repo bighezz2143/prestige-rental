@@ -3843,9 +3843,9 @@
                 </div>
 
                 <div class="filter-group">
-                    <label class="filter-label">Modello</label>
+                    <label class="filter-label">Tipologia</label>
                     <select id="filterCategory" class="filter-select">
-                        <option value="">Tutti i modelli</option>
+                        <option value="">Tutte le tipologie</option>
                         <option value="SUV">SUV</option>
                         <option value="Berlina">Berlina</option>
                         <option value="Coupé">Coupé</option>
@@ -5492,7 +5492,7 @@
                 unsplashBtn.style.display = 'none';
             }
 
-            // Toggle campo Modello: select per NOLEGGIO, input text per altre sezioni
+            // Toggle campo Tipologia: select per NOLEGGIO, input text per altre sezioni
             if (section === 'noleggio') {
                 carModel.style.display = 'none';
                 carModel.removeAttribute('required');
@@ -6492,7 +6492,7 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Modello *</label>
+                        <label class="form-label" id="carModelLabel">Tipologia *</label>
                         <!-- Input text per OFFERTE e ACQUISTA -->
                         <input type="text" id="carModel" class="form-input" required>
                         <!-- Select per NOLEGGIO -->
