@@ -371,10 +371,11 @@
             position: relative;
             z-index: 3;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr 1.35fr 1fr;
             gap: 3rem;
             width: 100%;
             max-width: 1100px;
+            align-items: center;
             opacity: 0;
             animation: fadeInUp 1s ease 0.3s forwards;
         }
@@ -392,7 +393,7 @@
 
         .option-card {
             position: relative;
-            height: 400px;
+            height: 360px;
             border-radius: 20.4px;
             overflow: hidden;
             cursor: pointer;
@@ -533,7 +534,11 @@
             transform: translateX(5px);
         }
 
-        /* Dark card (LE NOSTRE OFFERTE) */
+        /* Dark card (LE NOSTRE OFFERTE) — card centrale più grande */
+        .option-card.dark {
+            height: 420px;
+        }
+
         .option-card.dark .card-background {
             background: url('.claude/references/Black And Red Phone Mockup Instagram Story.png') center/cover no-repeat;
         }
@@ -3429,22 +3434,22 @@
     <!-- Hero Section with Cards -->
     <section id="home" class="hero">
         <div class="cards-container">
-            <div class="option-card dark" onclick="showSection('offerte')">
-                <div class="card-background"></div>
-                <div class="card-overlay"></div>
-                <div class="card-content">
-                    <h2 class="card-title">LE NOSTRE<br>OFFERTE</h2>
-                    <p class="card-subtitle">Scopri le migliori offerte sulle nostre auto di lusso selezionate</p>
-                    <div class="card-action">SCOPRI <span class="arrow">→</span></div>
-                </div>
-            </div>
-
             <div class="option-card middle" onclick="showSection('noleggio')">
                 <div class="card-background"></div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
                     <h2 class="card-title">NOLEGGIO</h2>
                     <p class="card-subtitle">Noleggia l'auto dei tuoi sogni per qualsiasi occasione</p>
+                    <div class="card-action">SCOPRI <span class="arrow">→</span></div>
+                </div>
+            </div>
+
+            <div class="option-card dark" onclick="showSection('offerte')">
+                <div class="card-background"></div>
+                <div class="card-overlay"></div>
+                <div class="card-content">
+                    <h2 class="card-title">LE NOSTRE<br>OFFERTE</h2>
+                    <p class="card-subtitle">Scopri le migliori offerte sulle nostre auto di lusso selezionate</p>
                     <div class="card-action">SCOPRI <span class="arrow">→</span></div>
                 </div>
             </div>
@@ -3475,7 +3480,7 @@
                 <h2 class="about-title">Eccellenza nel Noleggio di Veicoli Luxury</h2>
 
                 <p class="about-text">
-                    Da oltre 15 anni, Gasperini Auto rappresenta il punto di riferimento nel settore del noleggio auto di lusso.
+                    Gasperini Auto rappresenta il punto di riferimento nel settore del noleggio auto di lusso.
                     La nostra mission è offrire un'esperienza unica e personalizzata, mettendo a disposizione dei nostri
                     clienti una flotta esclusiva di veicoli premium.
                 </p>
@@ -3491,11 +3496,7 @@
                         <div class="stat-number">150+</div>
                         <div class="stat-label">Veicoli Luxury</div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">15</div>
-                        <div class="stat-label">Anni Esperienza</div>
-                    </div>
-                    <div class="stat-item">
+<div class="stat-item">
                         <div class="stat-number">5000+</div>
                         <div class="stat-label">Clienti Soddisfatti</div>
                     </div>
